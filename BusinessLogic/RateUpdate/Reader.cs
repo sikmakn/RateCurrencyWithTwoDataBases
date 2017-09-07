@@ -2,12 +2,13 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using BusinessLogic.RateUpdate.Interfacies;
 
 namespace BusinessLogic.RateUpdate
 {
-    public class Reader
+    public class Reader: IReader
     {
-        public static async Task<string> HttpClientRead(string url)
+        public async Task<string> HttpClientRead(string url)
         {
             HttpClientHandler handler = new HttpClientHandler()
             {

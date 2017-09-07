@@ -1,4 +1,5 @@
 ﻿using FluentScheduler;
+using WebApi.FluentScheduler.Interfacies;
 
 namespace WebApi.FluentScheduler
 {
@@ -6,7 +7,7 @@ namespace WebApi.FluentScheduler
     {
         public FluentSchedulerRegistry()
         {
-
+            Schedule<ISchedulerParsingJob>().ToRunEvery(1).Minutes();
         }
     }
 }
