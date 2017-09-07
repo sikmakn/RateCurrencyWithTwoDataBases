@@ -221,7 +221,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="RateCurrencyEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="RateCurrencyContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Bank" EntityType="Self.Bank" />
           <EntitySet Name="BankDepartment" EntityType="Self.BankDepartment" />
           <EntitySet Name="City" EntityType="Self.City" />
@@ -249,7 +249,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="RateCurrencyModelStoreContainer" CdmEntityContainer="RateCurrencyEntities">
+        <EntityContainerMapping StorageEntityContainer="RateCurrencyModelStoreContainer" CdmEntityContainer="RateCurrencyContext">
           <EntitySetMapping Name="Bank">
             <EntityTypeMapping TypeName="RateCurrencyModel.Bank">
               <MappingFragment StoreEntitySet="Bank">

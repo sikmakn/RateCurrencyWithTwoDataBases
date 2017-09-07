@@ -5,7 +5,7 @@ namespace DataAccess.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        RateCurrencyEntities Context { get; }
+        RateCurrencyContext Context { get; }
 
         int SaveChanges();
 

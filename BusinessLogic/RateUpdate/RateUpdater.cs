@@ -6,6 +6,7 @@ using BusinessLogic.RateUpdate.Interfacies;
 using DataAccess.DataBase;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfacies;
+using DataAccess.UnitOfWork;
 
 namespace BusinessLogic.RateUpdate
 {
@@ -18,10 +19,13 @@ namespace BusinessLogic.RateUpdate
         private readonly IBankDepartmentRepository _bankDepartmentRepository;
         private readonly IParser _parser;
         private readonly IReader _reader;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RateUpdater(DictionaryRepository<City> cityRepository, DictionaryRepository<Currency> currencyRepository,
-                            IParser parser, IBankDepartmentRepository bankDepartmentRepository, IReader reader)
+                            IParser parser, IBankDepartmentRepository bankDepartmentRepository, IReader reader, 
+                            IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _reader = reader;
             _bankDepartmentRepository = bankDepartmentRepository;
             _parser = parser;
@@ -34,6 +38,8 @@ namespace BusinessLogic.RateUpdate
             var dateTime = DateTime.UtcNow;
             var cities = _cityRepository.GetAll();
             var currencies = _currencyRepository.GetAll();
+            _cityRepository.Add(new City {Name = "minsk"});
+            _unitOfWork.SaveChanges();
             foreach (var city in cities)
             {
                 foreach (var currency in currencies)
@@ -57,11 +63,13 @@ namespace BusinessLogic.RateUpdate
             List<BankDepartment> departments = new List<BankDepartment>();
 
             string urlWithData;
+            var pageNumber = 1;
             do
             {
                 urlWithData = TransformUrl(city.Name, currency.Name);
 
-                var html = await _reader.HttpClientRead(urlWithData);
+                var html = await _reader.HttpClientRead(urlWithData + pageNumber);
+                pageNumber++;
 
                 var departmentsFromPage = await _parser.Pars(html, city.Id, currency.Id, dateTime);
                 departments.AddRange(departmentsFromPage);
@@ -70,5 +78,11 @@ namespace BusinessLogic.RateUpdate
 
             return departments;
         }
+
+        private static string CutSpacesFromTheEnd(string stringToCut)
+        {
+            return stringToCut;
+        }
+        
     }
 }

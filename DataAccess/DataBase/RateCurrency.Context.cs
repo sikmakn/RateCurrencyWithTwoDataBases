@@ -13,10 +13,10 @@ namespace DataAccess.DataBase
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class RateCurrencyEntities : DbContext
+    public partial class RateCurrencyContext : DbContext
     {
-        public RateCurrencyEntities()
-            : base("name=RateCurrencyEntities")
+        public RateCurrencyContext()
+            : base("name=RateCurrencyContext")
         {
         }
     

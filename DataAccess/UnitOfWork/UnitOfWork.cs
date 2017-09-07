@@ -7,7 +7,7 @@ namespace DataAccess.UnitOfWork
 {
     public class UnitOfWork: IUnitOfWork, IDisposable
     {
-        public RateCurrencyEntities Context { get; } = new RateCurrencyEntities();
+        public RateCurrencyContext Context { get; } = new RateCurrencyContext();
 
         public int SaveChanges()
         {
