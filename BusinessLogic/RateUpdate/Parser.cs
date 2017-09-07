@@ -25,7 +25,7 @@ namespace BusinessLogic.RateUpdate
             htmlDocument.LoadHtml(html);
 
             var nextPageArrow = htmlDocument.DocumentNode
-                .Descendants("span")
+                .Descendants("a")
                 .FirstOrDefault(x => x.Attributes.Contains("title")
                                      && x.Attributes["title"].Value == "Следующая страница");
             return nextPageArrow != null;

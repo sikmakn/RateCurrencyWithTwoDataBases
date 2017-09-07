@@ -38,8 +38,8 @@ namespace BusinessLogic.RateUpdate
             var dateTime = DateTime.UtcNow;
             var cities = _cityRepository.GetAll();
             var currencies = _currencyRepository.GetAll();
-            _cityRepository.Add(new City {Name = "minsk"});
-            _unitOfWork.SaveChanges();
+            //_cityRepository.Add(new City {Name = "minsk"});
+            //_unitOfWork.SaveChanges();
             foreach (var city in cities)
             {
                 foreach (var currency in currencies)
@@ -48,13 +48,13 @@ namespace BusinessLogic.RateUpdate
                     await _bankDepartmentRepository.AddOrUpdatesRange(departments);
                 }
             }
-
+            await _unitOfWork.SaveChangesAsync();
         }
 
         private string TransformUrl(string city, string currency)
         {
             var urlWithData = new StringBuilder(url);
-            urlWithData = urlWithData.Replace("{currency}", currency).Replace("{city}", city);
+            urlWithData = urlWithData.Replace("{currency}", currency.TrimEnd()).Replace("{city}", city.TrimEnd());
             return urlWithData.ToString();
         }
 
@@ -62,26 +62,21 @@ namespace BusinessLogic.RateUpdate
         {
             List<BankDepartment> departments = new List<BankDepartment>();
 
-            string urlWithData;
-            var pageNumber = 1;
+            string html;
+            var pageNumber = 0;
             do
             {
-                urlWithData = TransformUrl(city.Name, currency.Name);
-
-                var html = await _reader.HttpClientRead(urlWithData + pageNumber);
                 pageNumber++;
 
+                var urlWithData = TransformUrl(city.Name, currency.Name);
+                html = await _reader.HttpClientRead(urlWithData + pageNumber);
+                
                 var departmentsFromPage = await _parser.Pars(html, city.Id, currency.Id, dateTime);
                 departments.AddRange(departmentsFromPage);
 
-            } while (_parser.HasNextPage(urlWithData));
+            } while (_parser.HasNextPage(html));
 
             return departments;
-        }
-
-        private static string CutSpacesFromTheEnd(string stringToCut)
-        {
-            return stringToCut;
         }
         
     }
