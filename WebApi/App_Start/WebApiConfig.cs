@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+using WebApi.App_Start;
+using WebApi.Unity;
 
 namespace WebApi
 {
@@ -19,6 +18,10 @@ namespace WebApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            var container = UnityRegisterType.RegisterType();
+
+            config.DependencyResolver = new UnityResolver(container);
         }
     }
 }

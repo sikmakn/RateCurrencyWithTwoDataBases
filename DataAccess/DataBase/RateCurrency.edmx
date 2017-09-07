@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RateCurrencyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bank">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BankDepartment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="500" Nullable="false" />
+          <Property Name="Address" Type="nchar" MaxLength="500" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="BankId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CurrencyRateByTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CurrencyId" Type="int" Nullable="false" />
+          <Property Name="BankDepartmentId" Type="int" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="Sale" Type="float" Nullable="false" />
+          <Property Name="Purchase" Type="float" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BankDepartment_Bank">
+          <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bank">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BankDepartment">
+              <PropertyRef Name="BankId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BankDepartment_City">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BankDepartment">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CurrencyRateByTime_BankDepartment">
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="1" />
+          <End Role="CurrencyRateByTime" Type="Self.CurrencyRateByTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BankDepartment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrencyRateByTime">
+              <PropertyRef Name="BankDepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CurrencyRateByTime_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="1" />
+          <End Role="CurrencyRateByTime" Type="Self.CurrencyRateByTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrencyRateByTime">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RateCurrencyModelStoreContainer">
+          <EntitySet Name="Bank" EntityType="Self.Bank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BankDepartment" EntityType="Self.BankDepartment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Currency" EntityType="Self.Currency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrencyRateByTime" EntityType="Self.CurrencyRateByTime" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BankDepartment_Bank" Association="Self.FK_BankDepartment_Bank">
+            <End Role="Bank" EntitySet="Bank" />
+            <End Role="BankDepartment" EntitySet="BankDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BankDepartment_City" Association="Self.FK_BankDepartment_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="BankDepartment" EntitySet="BankDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CurrencyRateByTime_BankDepartment" Association="Self.FK_CurrencyRateByTime_BankDepartment">
+            <End Role="BankDepartment" EntitySet="BankDepartment" />
+            <End Role="CurrencyRateByTime" EntitySet="CurrencyRateByTime" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CurrencyRateByTime_Currency" Association="Self.FK_CurrencyRateByTime_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="CurrencyRateByTime" EntitySet="CurrencyRateByTime" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RateCurrencyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bank">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BankDepartment" Relationship="Self.FK_BankDepartment_Bank" FromRole="Bank" ToRole="BankDepartment" />
+        </EntityType>
+        <EntityType Name="BankDepartment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="BankId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bank" Relationship="Self.FK_BankDepartment_Bank" FromRole="BankDepartment" ToRole="Bank" />
+          <NavigationProperty Name="City" Relationship="Self.FK_BankDepartment_City" FromRole="BankDepartment" ToRole="City" />
+          <NavigationProperty Name="CurrencyRateByTime" Relationship="Self.FK_CurrencyRateByTime_BankDepartment" FromRole="BankDepartment" ToRole="CurrencyRateByTime" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="BankDepartment" Relationship="Self.FK_BankDepartment_City" FromRole="City" ToRole="BankDepartment" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CurrencyRateByTime" Relationship="Self.FK_CurrencyRateByTime_Currency" FromRole="Currency" ToRole="CurrencyRateByTime" />
+        </EntityType>
+        <EntityType Name="CurrencyRateByTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CurrencyId" Type="Int32" Nullable="false" />
+          <Property Name="BankDepartmentId" Type="Int32" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Sale" Type="Double" Nullable="false" />
+          <Property Name="Purchase" Type="Double" Nullable="false" />
+          <NavigationProperty Name="BankDepartment" Relationship="Self.FK_CurrencyRateByTime_BankDepartment" FromRole="CurrencyRateByTime" ToRole="BankDepartment" />
+          <NavigationProperty Name="Currency" Relationship="Self.FK_CurrencyRateByTime_Currency" FromRole="CurrencyRateByTime" ToRole="Currency" />
+        </EntityType>
+        <Association Name="FK_BankDepartment_Bank">
+          <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bank">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BankDepartment">
+              <PropertyRef Name="BankId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BankDepartment_City">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BankDepartment">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CurrencyRateByTime_BankDepartment">
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="1" />
+          <End Role="CurrencyRateByTime" Type="Self.CurrencyRateByTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BankDepartment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrencyRateByTime">
+              <PropertyRef Name="BankDepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CurrencyRateByTime_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="1" />
+          <End Role="CurrencyRateByTime" Type="Self.CurrencyRateByTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrencyRateByTime">
+              <PropertyRef Name="CurrencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RateCurrencyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bank" EntityType="Self.Bank" />
+          <EntitySet Name="BankDepartment" EntityType="Self.BankDepartment" />
+          <EntitySet Name="City" EntityType="Self.City" />
+          <EntitySet Name="Currency" EntityType="Self.Currency" />
+          <EntitySet Name="CurrencyRateByTime" EntityType="Self.CurrencyRateByTime" />
+          <AssociationSet Name="FK_BankDepartment_Bank" Association="Self.FK_BankDepartment_Bank">
+            <End Role="Bank" EntitySet="Bank" />
+            <End Role="BankDepartment" EntitySet="BankDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BankDepartment_City" Association="Self.FK_BankDepartment_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="BankDepartment" EntitySet="BankDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CurrencyRateByTime_BankDepartment" Association="Self.FK_CurrencyRateByTime_BankDepartment">
+            <End Role="BankDepartment" EntitySet="BankDepartment" />
+            <End Role="CurrencyRateByTime" EntitySet="CurrencyRateByTime" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CurrencyRateByTime_Currency" Association="Self.FK_CurrencyRateByTime_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="CurrencyRateByTime" EntitySet="CurrencyRateByTime" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RateCurrencyModelStoreContainer" CdmEntityContainer="RateCurrencyEntities">
+          <EntitySetMapping Name="Bank">
+            <EntityTypeMapping TypeName="RateCurrencyModel.Bank">
+              <MappingFragment StoreEntitySet="Bank">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BankDepartment">
+            <EntityTypeMapping TypeName="RateCurrencyModel.BankDepartment">
+              <MappingFragment StoreEntitySet="BankDepartment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="BankId" ColumnName="BankId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="City">
+            <EntityTypeMapping TypeName="RateCurrencyModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Currency">
+            <EntityTypeMapping TypeName="RateCurrencyModel.Currency">
+              <MappingFragment StoreEntitySet="Currency">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrencyRateByTime">
+            <EntityTypeMapping TypeName="RateCurrencyModel.CurrencyRateByTime">
+              <MappingFragment StoreEntitySet="CurrencyRateByTime">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+                <ScalarProperty Name="BankDepartmentId" ColumnName="BankDepartmentId" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Sale" ColumnName="Sale" />
+                <ScalarProperty Name="Purchase" ColumnName="Purchase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
