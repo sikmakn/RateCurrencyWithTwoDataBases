@@ -21,6 +21,8 @@ namespace WebApi
             var container = UnityRegisterType.RegisterType();
 
             config.DependencyResolver = new UnityResolver(container);
+
+            JobManager.UseUtcTime();
             JobManager.JobFactory = new JobFactory(container);
             JobManager.Initialize(new FluentSchedulerRegistry());
 

@@ -38,8 +38,6 @@ namespace BusinessLogic.RateUpdate
             var dateTime = DateTime.UtcNow;
             var cities = _cityRepository.GetAll();
             var currencies = _currencyRepository.GetAll();
-            //_cityRepository.Add(new City {Name = "minsk"});
-            //_unitOfWork.SaveChanges();
             foreach (var city in cities)
             {
                 foreach (var currency in currencies)

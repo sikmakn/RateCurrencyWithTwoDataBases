@@ -15,7 +15,7 @@ namespace WebApi.Unity
         public static UnityContainer RegisterType()
         {
             var container = new UnityContainer();
-            container.RegisterType<IUnitOfWork, UnitOfWork>();
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
             container.RegisterType<IBankDepartmentRepository, BankDepartmentRepository>();
             container.RegisterType<IDictionaryRepository<City>, DictionaryRepository<City>>();
             container.RegisterType<IDictionaryRepository<Currency>, DictionaryRepository<Currency>>();

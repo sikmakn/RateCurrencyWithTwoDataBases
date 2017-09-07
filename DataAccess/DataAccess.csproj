@@ -50,35 +50,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase\Bank.cs">
-      <DependentUpon>RateCurrency.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\BankDepartment.cs">
-      <DependentUpon>RateCurrency.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\City.cs">
-      <DependentUpon>RateCurrency.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\Currency.cs">
-      <DependentUpon>RateCurrency.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\CurrencyRateByTime.cs">
-      <DependentUpon>RateCurrency.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\Interfacies\DBDictionary.cs" />
-    <Compile Include="DataBase\RateCurrency.Context.cs">
+    <Compile Include="DataBase\RateCurrencyModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RateCurrency.Context.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\RateCurrency.cs">
+    <Compile Include="DataBase\RateCurrencyModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RateCurrency.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\RateCurrency.Designer.cs">
+    <Compile Include="DataBase\RateCurrencyModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RateCurrency.edmx</DependentUpon>
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BankDepartmentRepository.cs" />
@@ -90,12 +90,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="DataBase\RateCurrency.edmx">
+    <EntityDeploy Include="DataBase\RateCurrencyModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RateCurrency.Designer.cs</LastGenOutput>
+      <LastGenOutput>RateCurrencyModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DataBase\RateCurrency.edmx.diagram">
-      <DependentUpon>RateCurrency.edmx</DependentUpon>
+    <None Include="DataBase\RateCurrencyModel.edmx.diagram">
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -103,15 +103,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataBase\RateCurrency.Context.tt">
+    <Content Include="DataBase\RateCurrencyModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RateCurrency.edmx</DependentUpon>
-      <LastGenOutput>RateCurrency.Context.cs</LastGenOutput>
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
+      <LastGenOutput>RateCurrencyModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DataBase\RateCurrency.tt">
+    <Content Include="DataBase\RateCurrencyModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RateCurrency.edmx</DependentUpon>
-      <LastGenOutput>RateCurrency.cs</LastGenOutput>
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
+      <LastGenOutput>RateCurrencyModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
