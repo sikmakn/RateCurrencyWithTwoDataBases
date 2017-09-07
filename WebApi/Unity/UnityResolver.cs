@@ -28,7 +28,7 @@ namespace WebApi.App_Start
             //{
             //    return null;
             //}
-            return container.IsRegistered(serviceType) ? container.CreateChildContainer().Resolve(serviceType) : null;
+            return container.IsRegistered(serviceType) ? container.Resolve(serviceType) : null;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)

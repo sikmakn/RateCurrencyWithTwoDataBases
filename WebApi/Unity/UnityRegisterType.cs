@@ -16,13 +16,17 @@ namespace WebApi.Unity
         {
             var container = new UnityContainer();
             container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
-            container.RegisterType<IBankDepartmentRepository, BankDepartmentRepository>();
-            container.RegisterType<IDictionaryRepository<City>, DictionaryRepository<City>>();
-            container.RegisterType<IDictionaryRepository<Currency>, DictionaryRepository<Currency>>();
-            container.RegisterType<IParser, Parser>();
-            container.RegisterType<IReader, Reader>();
-            container.RegisterType<IRateUpdater, RateUpdater>();
-            container.RegisterType<ISchedulerParsingJob, SchedulerParsingJob>();
+            container.RegisterType<IBankDepartmentRepository, BankDepartmentRepository>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IDictionaryRepository<City>, DictionaryRepository<City>>(new HierarchicalLifetimeManager());
+            container.RegisterType<IDictionaryRepository<Currency>, DictionaryRepository<Currency>>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IBankRepository, BankRepository>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<IParser, Parser>(new HierarchicalLifetimeManager());
+            container.RegisterType<IReader, Reader>(new HierarchicalLifetimeManager());
+            container.RegisterType<IRateUpdater, RateUpdater>(new HierarchicalLifetimeManager());
+            container.RegisterType<ISchedulerParsingJob, SchedulerParsingJob>(new HierarchicalLifetimeManager());
             return container;
         }
     }

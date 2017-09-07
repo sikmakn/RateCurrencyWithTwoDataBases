@@ -5,7 +5,7 @@ using WebApi.FluentScheduler.Interfacies;
 
 namespace WebApi.FluentScheduler
 {
-    public class SchedulerParsingJob: IRegisteredObject, ISchedulerParsingJob
+    public class SchedulerParsingJob: IJob, IRegisteredObject, ISchedulerParsingJob
     {
         private readonly object _lock = new object();
 

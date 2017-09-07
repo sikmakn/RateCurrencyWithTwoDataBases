@@ -82,8 +82,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BankDepartmentRepository.cs" />
+    <Compile Include="Repositories\BankRepository.cs" />
     <Compile Include="Repositories\DictionaryRepository.cs" />
     <Compile Include="Repositories\Interfacies\IBankDepartmentRepository.cs" />
+    <Compile Include="Repositories\Interfacies\IBankRepository.cs" />
     <Compile Include="Repositories\Interfacies\IDictionaryRepository.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />

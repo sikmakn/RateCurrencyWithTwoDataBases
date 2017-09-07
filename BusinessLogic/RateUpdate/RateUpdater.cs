@@ -16,18 +16,18 @@ namespace BusinessLogic.RateUpdate
 
         private readonly DictionaryRepository<City> _cityRepository;
         private readonly DictionaryRepository<Currency> _currencyRepository;
-        private readonly IBankDepartmentRepository _bankDepartmentRepository;
+        private readonly IBankRepository _bankRepository;
         private readonly IParser _parser;
         private readonly IReader _reader;
         private readonly IUnitOfWork _unitOfWork;
 
         public RateUpdater(DictionaryRepository<City> cityRepository, DictionaryRepository<Currency> currencyRepository,
-                            IParser parser, IBankDepartmentRepository bankDepartmentRepository, IReader reader, 
+                            IParser parser, IReader reader, IBankRepository bankRepository, 
                             IUnitOfWork unitOfWork)
         {
+            _bankRepository = bankRepository;
             _unitOfWork = unitOfWork;
             _reader = reader;
-            _bankDepartmentRepository = bankDepartmentRepository;
             _parser = parser;
             _cityRepository = cityRepository;
             _currencyRepository = currencyRepository;
@@ -38,15 +38,36 @@ namespace BusinessLogic.RateUpdate
             var dateTime = DateTime.UtcNow;
             var cities = _cityRepository.GetAll();
             var currencies = _currencyRepository.GetAll();
+
+            var banks = new List<Bank>();
             foreach (var city in cities)
             {
                 foreach (var currency in currencies)
                 {
-                    var departments = await DepartmentsByAllPages(city, currency, dateTime);
-                    await _bankDepartmentRepository.AddOrUpdatesRange(departments);
+                    await DepartmentsByAllPagesToIncomingBanks(banks, city, currency, dateTime);
                 }
             }
+            AddBanksIsNotExistOrAddDepartments(banks);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        private void AddBanksIsNotExistOrAddDepartments(IEnumerable<Bank> banks)
+        {
+            foreach (var bank in banks)
+            {
+                var oldBank = _bankRepository.FindByName(bank.Name);
+                if (oldBank == null)
+                {
+                    _bankRepository.Add(bank);
+                }
+                else
+                {
+                    foreach (var department in bank.BankDepartment)
+                    {
+                        oldBank.BankDepartment.Add(department);
+                    } 
+                }
+            }
         }
 
         private string TransformUrl(string city, string currency)
@@ -56,10 +77,8 @@ namespace BusinessLogic.RateUpdate
             return urlWithData.ToString();
         }
 
-        private async Task<List<BankDepartment>> DepartmentsByAllPages(City city, Currency currency, DateTime dateTime)
+        private async Task DepartmentsByAllPagesToIncomingBanks(List<Bank> incomingBanks, City city, Currency currency, DateTime dateTime)
         {
-            List<BankDepartment> departments = new List<BankDepartment>();
-
             string html;
             var pageNumber = 0;
             do
@@ -69,12 +88,9 @@ namespace BusinessLogic.RateUpdate
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
                 
-                var departmentsFromPage = await _parser.Pars(html, city.Id, currency.Id, dateTime);
-                departments.AddRange(departmentsFromPage);
-
+                await _parser.ParsToIncomingBanks(incomingBanks, html, city.Id, currency.Id, dateTime);
             } while (_parser.HasNextPage(html));
 
-            return departments;
         }
         
     }

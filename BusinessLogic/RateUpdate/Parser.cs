@@ -12,10 +12,12 @@ namespace BusinessLogic.RateUpdate
     public class Parser: IParser
     {
         private readonly IBankDepartmentRepository _bankDepartmentRepository;
+        private readonly IBankRepository _bankRepository;
 
-        public Parser(IBankDepartmentRepository bankDepartmentRepository)
+        public Parser(IBankDepartmentRepository bankDepartmentRepository, IBankRepository bankRepository)
         {
             _bankDepartmentRepository = bankDepartmentRepository;
+            _bankRepository = bankRepository;
         }
 
         #region IParser
@@ -30,9 +32,9 @@ namespace BusinessLogic.RateUpdate
                                      && x.Attributes["title"].Value == "Следующая страница");
             return nextPageArrow != null;
         }
-        public async Task<List<BankDepartment>> Pars(string html, int cityId, int currencyId, DateTime dateTime)
+
+        public async Task ParsToIncomingBanks(List<Bank> incomingBanks, string html, int cityId, int currencyId, DateTime dateTime)
         {
-            List<BankDepartment> bankDepartments = new List<BankDepartment>();
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(html);
 
@@ -49,15 +51,13 @@ namespace BusinessLogic.RateUpdate
                 var bankName = td[0].FirstChild.FirstChild.FirstChild.OuterHtml;
                 var nameBranch = td[0].Descendants("span").ToArray()[0].InnerHtml;
 
-                BankDepartment bankDepartment = await _bankDepartmentRepository.Find(address, bankName) ?? new BankDepartment
+                var bank = SearchOrCreateBank(bankName, incomingBanks);
+
+                BankDepartment bankDepartment = await _bankDepartmentRepository.Find(address, nameBranch) ?? new BankDepartment
                 {
                     Address = address,
                     CityId = cityId,
                     Name = nameBranch,
-                    Bank = new Bank
-                    {
-                        Name = bankName
-                    },
                     CurrencyRateByTime = new List<CurrencyRateByTime>()
                 };
 
@@ -68,13 +68,28 @@ namespace BusinessLogic.RateUpdate
                     Sale = sale,
                     Purchase = purchase
                 };
-                bankDepartment.CurrencyRateByTime.Add(currencyRate);
-                bankDepartments.Add(bankDepartment);
-            }
 
-            return bankDepartments;
+                bankDepartment.CurrencyRateByTime.Add(currencyRate);
+
+                bank.BankDepartment.Add(bankDepartment); 
+            }
         }
         #endregion
+
+        private Bank SearchOrCreateBank(string bankName, List<Bank> banks)
+        {
+            var bank = banks.Find(x => x.Name.Contains(bankName));
+            if (bank != null) return bank;
+
+            bank = new Bank
+            {
+                Name = bankName,
+                BankDepartment = new List<BankDepartment>()
+            };
+            banks.Add(bank);
+            return bank;
+        }
+
         private HtmlNode[] GetRows(HtmlDocument htmlDocument)
         {
             var node = htmlDocument

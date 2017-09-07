@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using DataAccess.DataBase;
+using DataAccess.DataBase.Interfacies;
 
 namespace DataAccess.UnitOfWork
 {

@@ -8,5 +8,6 @@ namespace DataAccess.Repositories.Interfacies
         ICollection<T> GetAll();
         T Add(T t);
         T FindByName(string name);
+        T AddIfNotHave(T t);
     }
 }

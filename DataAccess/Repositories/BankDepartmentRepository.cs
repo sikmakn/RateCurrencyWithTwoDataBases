@@ -53,10 +53,11 @@ namespace DataAccess.Repositories
             department.CurrencyRateByTime.Add(rate);
         }
 
-        private async Task AddCurrencyRateRange(int departmentId, ICollection<CurrencyRateByTime> rates)
+        private async Task AddCurrencyRateRange(int departmentId, IEnumerable<CurrencyRateByTime> rates)
         {
             var department = await _bankDepartments.FindAsync(departmentId);
             if (department == null) throw new NullReferenceException();
+
             foreach (var rate in rates)
             {
                 department.CurrencyRateByTime.Add(rate);
