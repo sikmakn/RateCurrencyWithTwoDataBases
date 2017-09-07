@@ -103,6 +103,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="FluentScheduler\FluentSchedulerRegistry.cs" />
     <Compile Include="FluentScheduler\Interfacies\ISchedulerParsingJob.cs" />
+    <Compile Include="FluentScheduler\JobFactory.cs" />
     <Compile Include="FluentScheduler\SchedulerParsingJob.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

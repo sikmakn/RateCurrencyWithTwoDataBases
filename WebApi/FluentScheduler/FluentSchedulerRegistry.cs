@@ -7,7 +7,7 @@ namespace WebApi.FluentScheduler
     {
         public FluentSchedulerRegistry()
         {
-            Schedule<ISchedulerParsingJob>().ToRunEvery(1).Minutes();
+            Schedule<ISchedulerParsingJob>().ToRunNow();
         }
     }
 }

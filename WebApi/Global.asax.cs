@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using FluentScheduler;
 using WebApi.FluentScheduler;
+using WebApi.FluentScheduler.Interfacies;
 
 namespace WebApi
 {
@@ -9,7 +10,8 @@ namespace WebApi
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            JobManager.Initialize(new FluentSchedulerRegistry());
+        //    JobManager.Initialize(new FluentSchedulerRegistry());
+
         }
     }
 }

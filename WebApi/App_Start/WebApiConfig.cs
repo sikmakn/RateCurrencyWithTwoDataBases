@@ -1,5 +1,7 @@
 ﻿using System.Web.Http;
+using FluentScheduler;
 using WebApi.App_Start;
+using WebApi.FluentScheduler;
 using WebApi.Unity;
 
 namespace WebApi
@@ -22,6 +24,9 @@ namespace WebApi
             var container = UnityRegisterType.RegisterType();
 
             config.DependencyResolver = new UnityResolver(container);
+            JobManager.JobFactory = new JobFactory(container);
+            JobManager.Initialize(new FluentSchedulerRegistry());
+
         }
     }
 }
