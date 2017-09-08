@@ -1,5 +1,7 @@
 ﻿using BusinessLogic.RateUpdate;
 using BusinessLogic.RateUpdate.Interfacies;
+using BusinessLogic.Services;
+using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfacies;
@@ -27,6 +29,9 @@ namespace WebApi.Unity
             container.RegisterType<IReader, Reader>(new HierarchicalLifetimeManager());
             container.RegisterType<IRateUpdater, RateUpdater>(new HierarchicalLifetimeManager());
             container.RegisterType<ISchedulerParsingJob, SchedulerParsingJob>(new HierarchicalLifetimeManager());
+
+            container.RegisterType<ICurrencyRateByTimeService, CurrencyRateByTimeService>();
+
             return container;
         }
     }
