@@ -7,6 +7,7 @@ using DataAccess.Repositories;
 using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
 using Microsoft.Practices.Unity;
+using WebApi.Controllers;
 using WebApi.FluentScheduler;
 using WebApi.FluentScheduler.Interfacies;
 
@@ -31,7 +32,9 @@ namespace WebApi.Unity
             container.RegisterType<ISchedulerParsingJob, SchedulerParsingJob>(new HierarchicalLifetimeManager());
 
             container.RegisterType<ICurrencyRateByTimeService, CurrencyRateByTimeService>();
+            container.RegisterType<ICurrencyRateByTimeRepository, CurrencyRateByTimeRepository>();
 
+            container.RegisterType<CurrencyRateByTimeController>();
             return container;
         }
     }

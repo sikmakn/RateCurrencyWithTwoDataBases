@@ -1,7 +1,4 @@
 ﻿using System.Web.Http;
-using System.Web.OData.Builder;
-using System.Web.OData.Extensions;
-using DataAccess.DataBase;
 using FluentScheduler;
 using WebApi.App_Start;
 using WebApi.FluentScheduler;
@@ -31,16 +28,8 @@ namespace WebApi
             JobManager.Initialize(new FluentSchedulerRegistry());
 
             //OData
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.EntitySet<CurrencyRateByTime>("CurrencyRateByTimes");
-            builder.EntitySet<BankDepartment>("BankDepartment");
-            builder.EntitySet<Currency>("Currency");
-            config.MapODataServiceRoute(
-                routeName: "ODataRoute",
-                routePrefix: null,
-                model: builder.GetEdmModel()
-            );
-            
+            ODataConfig.ODataRegister(config);
+
         }
     }
 }

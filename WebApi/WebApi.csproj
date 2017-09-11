@@ -136,8 +136,10 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\ODataConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\CurrencyRateByTimesController.cs" />
+    <Compile Include="Controllers\BankDepartmentController.cs" />
+    <Compile Include="Controllers\CurrencyRateByTimeController.cs" />
     <Compile Include="FluentScheduler\FluentSchedulerRegistry.cs" />
     <Compile Include="FluentScheduler\Interfacies\ISchedulerParsingJob.cs" />
     <Compile Include="FluentScheduler\JobFactory.cs" />
