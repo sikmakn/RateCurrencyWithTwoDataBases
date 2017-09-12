@@ -17,6 +17,11 @@ namespace DataAccess.Repositories
             _currencyRateByTimes = unitOfWork.Context.Set<CurrencyRateByTime>();
         }
 
+        public CurrencyRateByTime Add(CurrencyRateByTime currencyRateByTime)
+        {
+            return _currencyRateByTimes.Add(currencyRateByTime);
+        }
+
         public IQueryable<CurrencyRateByTime> GetAll()
         {
             return _currencyRateByTimes;
@@ -24,7 +29,8 @@ namespace DataAccess.Repositories
 
         public IQueryable<CurrencyRateByTime> GetAllActual()
         {
-            return _currencyRateByTimes.Where(x => DateTime.UtcNow - x.DateTime <= new TimeSpan(4, 0, 0));
+            int span = new TimeSpan(4, 0, 0).Milliseconds;
+            return _currencyRateByTimes.Where(x => DbFunctions.DiffMilliseconds(DateTime.UtcNow,x.DateTime) < span);
         }
 
         public IQueryable<CurrencyRateByTime> GetByBankDepartment(int departmentId)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.RateUpdate.Interfacies;
@@ -20,10 +21,11 @@ namespace BusinessLogic.RateUpdate
         private readonly IParser _parser;
         private readonly IReader _reader;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrencyRateByTimeRepository _currencyRateByTimeRepository;
 
         public RateUpdater(DictionaryRepository<City> cityRepository, DictionaryRepository<Currency> currencyRepository,
                             IParser parser, IReader reader, IBankRepository bankRepository, 
-                            IUnitOfWork unitOfWork)
+                            IUnitOfWork unitOfWork, ICurrencyRateByTimeRepository currencyRateByTimeRepository)
         {
             _bankRepository = bankRepository;
             _unitOfWork = unitOfWork;
@@ -31,6 +33,7 @@ namespace BusinessLogic.RateUpdate
             _parser = parser;
             _cityRepository = cityRepository;
             _currencyRepository = currencyRepository;
+            _currencyRateByTimeRepository = currencyRateByTimeRepository;
         }
 
         public async Task Update()
@@ -62,10 +65,29 @@ namespace BusinessLogic.RateUpdate
                 }
                 else
                 {
-                    foreach (var department in bank.BankDepartment)
+                    AddDepartmetIsNotExistOrAddRate(bank.BankDepartment, oldBank.BankDepartment);
+                }
+            }
+        }
+
+        private void AddDepartmetIsNotExistOrAddRate(IEnumerable<BankDepartment> departments, ICollection<BankDepartment> oldDepartments)
+        {
+            foreach (var department in departments)
+            {
+                var oldDepartment = oldDepartments.FirstOrDefault(x =>
+                    x.Name.Contains(department.Name) && x.Address.Contains(department.Address));
+                if (oldDepartment == null)
+                {
+                    oldDepartments.Add(department);
+                }
+                else
+                {
+                    foreach (var rateByTime in department.CurrencyRateByTime)
                     {
-                        oldBank.BankDepartment.Add(department);
-                    } 
+                        rateByTime.BankDepartment = oldDepartment;
+                        rateByTime.BankDepartmentId = oldDepartment.Id;
+                        oldDepartment.CurrencyRateByTime.Add(rateByTime);
+                    }
                 }
             }
         }
@@ -81,14 +103,14 @@ namespace BusinessLogic.RateUpdate
         {
             string html;
             var pageNumber = 0;
+
             do
             {
                 pageNumber++;
-
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
-                
                 await _parser.ParsToIncomingBanks(incomingBanks, html, city.Id, currency.Id, dateTime);
+
             } while (_parser.HasNextPage(html));
 
         }

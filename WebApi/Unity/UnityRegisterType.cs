@@ -31,10 +31,9 @@ namespace WebApi.Unity
             container.RegisterType<IRateUpdater, RateUpdater>(new HierarchicalLifetimeManager());
             container.RegisterType<ISchedulerParsingJob, SchedulerParsingJob>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<ICurrencyRateByTimeService, CurrencyRateByTimeService>();
             container.RegisterType<ICurrencyRateByTimeRepository, CurrencyRateByTimeRepository>();
+            container.RegisterType<ICurrencyRateByTimeService, CurrencyRateByTimeService>();
 
-            container.RegisterType<CurrencyRateByTimeController>();
             return container;
         }
     }

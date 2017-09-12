@@ -20,15 +20,15 @@ namespace WebApi.App_Start
 
         public object GetService(Type serviceType)
         {
-            //try
-            //{
-            //    return container.Resolve(serviceType);
-            //}
-            //catch (ResolutionFailedException)
-            //{
-            //    return null;
-            //}
-            return container.IsRegistered(serviceType) ? container.Resolve(serviceType) : null;
+            try
+            {
+                return container.Resolve(serviceType);
+            }
+            catch (ResolutionFailedException)
+            {
+                return null;
+            }
+            //return container.IsRegistered(serviceType) ? container.Resolve(serviceType) : null;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)

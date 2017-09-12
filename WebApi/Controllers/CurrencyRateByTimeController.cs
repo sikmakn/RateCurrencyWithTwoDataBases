@@ -26,7 +26,7 @@ namespace WebApi.Controllers
 
         // GET: odata/CurrencyRateByTimes
         [EnableQuery]
-        public IQueryable<CurrencyRateByTime> GetCurrencyRateByTimes()
+        public IQueryable<CurrencyRateByTime> GetCurrencyRateByTime()
         {
             return _currencyRateByTimeService.GetAllActual();
         }
