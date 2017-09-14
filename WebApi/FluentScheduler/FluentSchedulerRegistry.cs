@@ -8,7 +8,7 @@ namespace WebApi.FluentScheduler
         public FluentSchedulerRegistry()
         {
             var schedule = Schedule<ISchedulerParsingJob>();
-            schedule.ToRunNow().AndEvery(4).Hours();
+            schedule.ToRunEvery(4).Hours();
         }
     }
 }
