@@ -30,8 +30,9 @@ namespace DataAccess.Repositories
         public IQueryable<CurrencyRateByTime> GetAllActual()
         {
             var span = new TimeSpan(4, 0, 0).TotalHours;
-            var result = _currencyRateByTimes.Where(x => DbFunctions.DiffDays(DateTime.UtcNow, x.DateTime) == 0 &&
-            DbFunctions.DiffHours(DateTime.UtcNow, x.DateTime) < span);
+            var now= DateTime.UtcNow;
+            var result = _currencyRateByTimes.Where(x => DbFunctions.DiffDays(now, x.DateTime) == 0 &&
+            DbFunctions.DiffHours(x.DateTime, now) < span);
             return result;
         }
 
