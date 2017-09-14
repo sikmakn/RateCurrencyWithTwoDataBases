@@ -2,6 +2,7 @@
 using System.Web.OData.Builder;
 using System.Web.OData.Extensions;
 using DataAccess.DataBase;
+using DataAccess.Models;
 
 namespace WebApi
 {

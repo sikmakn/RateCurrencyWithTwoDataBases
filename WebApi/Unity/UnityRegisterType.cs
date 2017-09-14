@@ -1,4 +1,8 @@
-﻿using BusinessLogic.RateUpdate;
+﻿using BusinessLogic.BnrbApiAccess.Services;
+using BusinessLogic.BnrbApiAccess.Services.Interfacies;
+using BusinessLogic.Helpers;
+using BusinessLogic.Helpers.Interfacies;
+using BusinessLogic.RateUpdate;
 using BusinessLogic.RateUpdate.Interfacies;
 using BusinessLogic.Services;
 using BusinessLogic.Services.Interfacies;
@@ -7,7 +11,6 @@ using DataAccess.Repositories;
 using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
 using Microsoft.Practices.Unity;
-using WebApi.Controllers;
 using WebApi.FluentScheduler;
 using WebApi.FluentScheduler.Interfacies;
 
@@ -33,7 +36,8 @@ namespace WebApi.Unity
 
             container.RegisterType<ICurrencyRateByTimeRepository, CurrencyRateByTimeRepository>();
             container.RegisterType<ICurrencyRateByTimeService, CurrencyRateByTimeService>();
-
+            
+            container.RegisterType<IRateNbrbService, RateNbrbService>();
             return container;
         }
     }

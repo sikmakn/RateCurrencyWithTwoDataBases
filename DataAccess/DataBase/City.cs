@@ -14,7 +14,7 @@ namespace DataAccess.DataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class City: DBDictionary
+    public partial class City:DBDictionary
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public City()

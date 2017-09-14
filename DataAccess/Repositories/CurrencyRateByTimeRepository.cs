@@ -29,8 +29,10 @@ namespace DataAccess.Repositories
 
         public IQueryable<CurrencyRateByTime> GetAllActual()
         {
-            int span = new TimeSpan(4, 0, 0).Milliseconds;
-            return _currencyRateByTimes.Where(x => DbFunctions.DiffMilliseconds(DateTime.UtcNow,x.DateTime) < span);
+            var span = new TimeSpan(4, 0, 0).TotalHours;
+            var result = _currencyRateByTimes.Where(x => DbFunctions.DiffDays(DateTime.UtcNow, x.DateTime) == 0 &&
+            DbFunctions.DiffHours(DateTime.UtcNow, x.DateTime) < span);
+            return result;
         }
 
         public IQueryable<CurrencyRateByTime> GetByBankDepartment(int departmentId)

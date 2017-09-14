@@ -12,12 +12,10 @@ namespace BusinessLogic.RateUpdate
     public class Parser: IParser
     {
         private readonly IBankDepartmentRepository _bankDepartmentRepository;
-        private readonly IBankRepository _bankRepository;
 
-        public Parser(IBankDepartmentRepository bankDepartmentRepository, IBankRepository bankRepository)
+        public Parser(IBankDepartmentRepository bankDepartmentRepository)
         {
             _bankDepartmentRepository = bankDepartmentRepository;
-            _bankRepository = bankRepository;
         }
 
         #region IParser
@@ -58,7 +56,7 @@ namespace BusinessLogic.RateUpdate
                     Address = address,
                     CityId = cityId,
                     Name = nameBranch,
-                    CurrencyRateByTime = new List<CurrencyRateByTime>()
+                    CurrencyRateByTime = new List<CurrencyRateByTime>(),
                 };
 
                 var currencyRate = new CurrencyRateByTime

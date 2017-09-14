@@ -33,42 +33,35 @@ namespace BusinessLogic.Services
             return _currencyRateByTimeRepository.GetAllActual();
         }
 
-        public IQueryable<CurrencyRateByTime> GetActualByCurrency(string currency)
-        {
-            var currencyId = _currencyRepository.FindByName(currency).Id;
-            return _currencyRateByTimeRepository.GetAllActual().Where(x => x.CurrencyId == currencyId);
-        }
+        //public IQueryable<CurrencyRateByTime> GetActualByCurrency(string currency)
+        //{
+        //    var currencyId = _currencyRepository.FindByName(currency).Id;
+        //    return _currencyRateByTimeRepository.GetAllActual().Where(x => x.CurrencyId == currencyId);
+        //}
 
-        public double GetBestPurchaseByCurrency(string currency)
-        {
-            return GetActualByCurrency(currency).Max(x => x.Purchase);
-        }
+        //public double GetBestPurchaseByCurrency(string currency)
+        //{
+        //    return GetActualByCurrency(currency).Max(x => x.Purchase);
+        //}
 
-        public double GetBestSaleByCurrency(string currency)
-        {
-            return GetActualByCurrency(currency).Min(x => x.Sale);
-        }
+        //public double GetBestSaleByCurrency(string currency)
+        //{
+        //    return GetActualByCurrency(currency).Min(x => x.Sale);
+        //}
 
-        public IQueryable<CurrencyRateByTime> GetBestByPurchaseByCurrecny(string currency)
-        {
-            var actuals = GetActualByCurrency(currency);
-            var bestPurchase = actuals.Max(x => x.Purchase);
-            return actuals.Where(x => Math.Abs(x.Purchase - bestPurchase) < 0.0001);
-        }
+        //public IQueryable<CurrencyRateByTime> GetBestByPurchaseByCurrecny(string currency)
+        //{
+        //    var actuals = GetActualByCurrency(currency);
+        //    var bestPurchase = actuals.Max(x => x.Purchase);
+        //    return actuals.Where(x => Math.Abs(x.Purchase - bestPurchase) < 0.0001);
+        //}
 
-        public IQueryable<CurrencyRateByTime> GetBestBySaleByCurrency(string currency)
-        {
-            var actuals = GetActualByCurrency(currency);
-            var bestsale = actuals.Min(x => x.Sale);
-            return actuals.Where(x => Math.Abs(x.Sale - bestsale) < 0.0001);
-        }
-
-        public IQueryable<CurrencyRateByTime> GetHistoryByNbRB()
-        {
-            var bank = _bankRepository.FindByName("National bank of the Republic of Belarus");
-            var department = bank?.BankDepartment.FirstOrDefault();
-            return department?.CurrencyRateByTime.AsQueryable();
-        }
+        //public IQueryable<CurrencyRateByTime> GetBestBySaleByCurrency(string currency)
+        //{
+        //    var actuals = GetActualByCurrency(currency);
+        //    var bestsale = actuals.Min(x => x.Sale);
+        //    return actuals.Where(x => Math.Abs(x.Sale - bestsale) < 0.0001);
+        //}
 
     }
 }

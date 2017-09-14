@@ -2,9 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BusinessLogic.RateUpdate.Interfacies;
+using BusinessLogic.Helpers.Interfacies;
 
-namespace BusinessLogic.RateUpdate
+namespace BusinessLogic.Helpers
 {
     public class Reader: IReader
     {

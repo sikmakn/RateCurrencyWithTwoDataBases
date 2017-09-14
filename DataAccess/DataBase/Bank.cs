@@ -7,14 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using DataAccess.DataBase.Interfacies;
-
 namespace DataAccess.DataBase
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Bank: DBDictionary
+    public partial class Bank
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Bank()
@@ -23,7 +21,7 @@ namespace DataAccess.DataBase
         }
     
         public int Id { get; set; }
-        public override string Name { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BankDepartment> BankDepartment { get; set; }

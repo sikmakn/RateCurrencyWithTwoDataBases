@@ -40,13 +40,6 @@ namespace WebApi.Controllers
             return SingleResult.Create(query.AsQueryable());
         }
 
-        [Route("Statistic")]
-        [EnableQuery]
-        public IQueryable<CurrencyRateByTime> GetStatistic()
-        {
-            return _currencyRateByTimeService.GetHistoryByNbRB();
-        }
-
         [EnableQuery]
         public async Task<SingleResult<BankDepartment>> GetBankDepartment([FromODataUri] int key)
         {

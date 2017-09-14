@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLogic.Helpers.Interfacies;
 using BusinessLogic.RateUpdate.Interfacies;
 using DataAccess.DataBase;
 using DataAccess.Repositories;
@@ -21,11 +22,9 @@ namespace BusinessLogic.RateUpdate
         private readonly IParser _parser;
         private readonly IReader _reader;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICurrencyRateByTimeRepository _currencyRateByTimeRepository;
 
         public RateUpdater(DictionaryRepository<City> cityRepository, DictionaryRepository<Currency> currencyRepository,
-                            IParser parser, IReader reader, IBankRepository bankRepository, 
-                            IUnitOfWork unitOfWork, ICurrencyRateByTimeRepository currencyRateByTimeRepository)
+                            IParser parser, IReader reader, IBankRepository bankRepository, IUnitOfWork unitOfWork)
         {
             _bankRepository = bankRepository;
             _unitOfWork = unitOfWork;
@@ -33,7 +32,6 @@ namespace BusinessLogic.RateUpdate
             _parser = parser;
             _cityRepository = cityRepository;
             _currencyRepository = currencyRepository;
-            _currencyRateByTimeRepository = currencyRateByTimeRepository;
         }
 
         public async Task Update()
