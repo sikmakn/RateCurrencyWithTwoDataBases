@@ -15,31 +15,10 @@ namespace WebApi.Controllers
         {
             _rateNbrbService = rateNbrbService;
         }
-        // GET: api/RateNbrb
+
         public async Task<IEnumerable<RateShortNbrb>> Get(int currencyId, DateTime startDate, DateTime endDate)
         {
             return await _rateNbrbService.ReadAllCurrencyBnrbs(currencyId, startDate, endDate);
-        }
-
-        // GET: api/RateNbrb/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/RateNbrb
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/RateNbrb/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/RateNbrb/5
-        public void Delete(int id)
-        {
         }
     }
 }
