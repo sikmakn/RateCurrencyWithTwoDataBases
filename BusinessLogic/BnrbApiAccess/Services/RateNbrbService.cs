@@ -12,7 +12,7 @@ namespace BusinessLogic.BnrbApiAccess.Services
     public class RateNbrbService: IRateNbrbService
     {
         private readonly IReader _reader;
-        private const string URI = "http://www.nbrb.by/API/ExRates";
+        private const string Uri = "http://www.nbrb.by/API/ExRates";
         private static readonly JavaScriptSerializer JsonSerializer = new JavaScriptSerializer();
 
         public RateNbrbService(IReader reader)
@@ -20,32 +20,63 @@ namespace BusinessLogic.BnrbApiAccess.Services
             _reader = reader;
         }
 
-        public async Task<IEnumerable<RateShortNbrb>> ReadAllCurrencyBnrbs(int currencyId, DateTime startDate, DateTime endDate)
-        {
-            var uriBuilder = new StringBuilder(URI);
-            uriBuilder = uriBuilder.Append("/Rates/Dynamics/").Append(currencyId);
+        #region IRateNbrb
 
+        public async Task<IEnumerable<RateShortNbrb>> ReadCurrencyBnrbs(int currencyId, DateTime startDate, DateTime endDate)
+        {
+            var uriDynamics = GetUriDynamics(currencyId);
             var results = new List<RateShortNbrb>();
 
-            var startPeriod = startDate;
-            var startPeriodWithAddedYear = startPeriod.AddYears(1);
-            var endPeriod = startPeriodWithAddedYear < endDate ? startPeriodWithAddedYear : endDate;
-
+            InitTimePeriods(startDate, endDate, out var startPeriod, out var endPeriod);
             while (endPeriod <= endDate)
             {
-                var uri = new StringBuilder(uriBuilder.ToString());
-                uri.Append($"?&startDate={startPeriod.ToString("u").Split(' ')[0]}&endDate={endPeriod.ToString("u").Split(' ')[0]}");
-
-                var resultByPeriod = await GetObjectListByUriAsync<RateShortNbrb>(uri.ToString());
+                var resultByPeriod = await GetResultsByPeriod(uriDynamics, startPeriod, endPeriod);
                 results.AddRange(resultByPeriod);
-                if(endPeriod == endDate) break;
-
-                startPeriod = startPeriodWithAddedYear < endDate ? startPeriodWithAddedYear : endPeriod;
-                startPeriodWithAddedYear = startPeriodWithAddedYear.AddYears(1);
-                endPeriod = startPeriodWithAddedYear < endDate ? startPeriodWithAddedYear : endDate;
-            }
+                if (endPeriod == endDate) break;
+                RecountDates(ref startPeriod, ref endPeriod, ref endDate);
+            };
 
             return results;
+        }
+
+        #endregion
+
+        #region PrivateMethods
+
+        private async Task<List<RateShortNbrb>> GetResultsByPeriod(string uriDynamics, DateTime startPeriod, DateTime endPeriod)
+        {
+            var uri = GetUriWithDates(uriDynamics, startPeriod, endPeriod);
+            return await GetObjectListByUriAsync<RateShortNbrb>(uri);
+        }
+
+        private static string GetUriDynamics(int currencyId)
+        {
+            var uriBuilder = new StringBuilder(Uri);
+            uriBuilder = uriBuilder.Append("/Rates/Dynamics/").Append(currencyId);
+            return uriBuilder.ToString();
+        }
+
+        private static void InitTimePeriods(DateTime startDate, DateTime endDate, out DateTime startPeriod, out DateTime endPeriod)
+        {
+            startPeriod = startDate;
+            var startPeriodWithAddedYear = startPeriod.AddDays(365);
+            endPeriod = startPeriodWithAddedYear < endDate ? startPeriodWithAddedYear : endDate;
+        }
+
+        private static string GetUriWithDates(string uri, DateTime startPeriod, DateTime endPeriod)
+        {
+            var uriBuilder = new StringBuilder(uri);
+            uriBuilder.Append($"?&startDate={startPeriod.ToString("u").Split(' ')[0]}&endDate={endPeriod.ToString("u").Split(' ')[0]}");
+            return uriBuilder.ToString();
+        }
+
+        private static void RecountDates(ref DateTime startPeriod, ref DateTime endPeriod, ref DateTime endDate)
+        {
+            var startPeriodWithAddedYear = startPeriod.AddDays(365);
+            startPeriod = startPeriodWithAddedYear < endDate ? startPeriodWithAddedYear : endPeriod;
+            startPeriodWithAddedYear = startPeriodWithAddedYear.AddDays(365);
+            endPeriod = startPeriodWithAddedYear < endDate ? startPeriodWithAddedYear : endDate;
+
         }
 
         private async Task<List<T>> GetObjectListByUriAsync<T>(string uri)
@@ -60,5 +91,7 @@ namespace BusinessLogic.BnrbApiAccess.Services
                 return null;
             }
         }
+
+        #endregion
     }
 }

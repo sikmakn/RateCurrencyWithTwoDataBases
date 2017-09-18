@@ -68,7 +68,7 @@ namespace BusinessLogic.RateUpdate
             }
         }
 
-        private void AddDepartmetIsNotExistOrAddRate(IEnumerable<BankDepartment> departments, ICollection<BankDepartment> oldDepartments)
+        private static void AddDepartmetIsNotExistOrAddRate(IEnumerable<BankDepartment> departments, ICollection<BankDepartment> oldDepartments)
         {
             foreach (var department in departments)
             {
@@ -101,16 +101,13 @@ namespace BusinessLogic.RateUpdate
         {
             string html;
             var pageNumber = 0;
-
             do
             {
                 pageNumber++;
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
                 await _parser.ParsToIncomingBanks(incomingBanks, html, city.Id, currency.Id, dateTime);
-
             } while (_parser.HasNextPage(html));
-
         }
         
     }

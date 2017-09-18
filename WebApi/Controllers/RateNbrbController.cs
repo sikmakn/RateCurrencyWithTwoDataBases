@@ -18,7 +18,7 @@ namespace WebApi.Controllers
 
         public async Task<IEnumerable<RateShortNbrb>> Get(int currencyId, DateTime startDate, DateTime endDate)
         {
-            return await _rateNbrbService.ReadAllCurrencyBnrbs(currencyId, startDate, endDate);
+            return await _rateNbrbService.ReadCurrencyBnrbs(currencyId, startDate, endDate);
         }
     }
 }

@@ -7,6 +7,6 @@ namespace BusinessLogic.BnrbApiAccess.Services.Interfacies
 {
     public interface IRateNbrbService
     {
-        Task<IEnumerable<RateShortNbrb>> ReadAllCurrencyBnrbs(int currencyId, DateTime startDate, DateTime endDate);
+        Task<IEnumerable<RateShortNbrb>> ReadCurrencyBnrbs(int currencyId, DateTime startDate, DateTime endDate);
     }
 }
