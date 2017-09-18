@@ -38,7 +38,7 @@ namespace WebApi.Controllers
         public async Task<SingleResult<BankDepartment>> GetBankDepartment([FromODataUri] int key)
         {
             var currencyRateByTime = await _currencyRateByTimeService.GetById(key);
-            var department = currencyRateByTime.BankDepartment;
+            var department = currencyRateByTime?.BankDepartment;
             var query = new List<BankDepartment> {department};
             return SingleResult.Create(query.AsQueryable());
         }
@@ -48,7 +48,7 @@ namespace WebApi.Controllers
         public async Task<SingleResult<Currency>> GetCurrency([FromODataUri] int key)
         {
             var currencyRateByTime = await _currencyRateByTimeService.GetById(key);
-            var currency = currencyRateByTime.Currency;
+            var currency = currencyRateByTime?.Currency;
             var query = new List<Currency> {currency};
             return SingleResult.Create(query.AsQueryable());
         }

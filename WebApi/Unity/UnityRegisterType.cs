@@ -1,7 +1,7 @@
-﻿using BusinessLogic.BnrbApiAccess.Services;
-using BusinessLogic.BnrbApiAccess.Services.Interfacies;
-using BusinessLogic.Helpers;
+﻿using BusinessLogic.Helpers;
 using BusinessLogic.Helpers.Interfacies;
+using BusinessLogic.NbrbApiAccess.Services;
+using BusinessLogic.NbrbApiAccess.Services.Interfacies;
 using BusinessLogic.RateUpdate;
 using BusinessLogic.RateUpdate.Interfacies;
 using BusinessLogic.Services;

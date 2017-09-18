@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using BusinessLogic.BnrbApiAccess.Services.Interfacies;
-using DataAccess.Models;
+using BusinessLogic.NbrbApiAccess.Models;
+using BusinessLogic.NbrbApiAccess.Services.Interfacies;
 
 namespace WebApi.Controllers
 {
@@ -18,7 +18,7 @@ namespace WebApi.Controllers
 
         public async Task<IEnumerable<RateShortNbrb>> Get(int currencyId, DateTime startDate, DateTime endDate)
         {
-            return await _rateNbrbService.ReadCurrencyBnrbs(currencyId, startDate, endDate);
+            return await _rateNbrbService.ReadCurrenciesNbrb(currencyId, startDate, endDate);
         }
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
-using BusinessLogic.BnrbApiAccess.Services.Interfacies;
 using BusinessLogic.Helpers.Interfacies;
-using DataAccess.Models;
+using BusinessLogic.NbrbApiAccess.Models;
+using BusinessLogic.NbrbApiAccess.Services.Interfacies;
 
-namespace BusinessLogic.BnrbApiAccess.Services
+namespace BusinessLogic.NbrbApiAccess.Services
 {
     public class RateNbrbService: IRateNbrbService
     {
@@ -22,7 +22,7 @@ namespace BusinessLogic.BnrbApiAccess.Services
 
         #region IRateNbrb
 
-        public async Task<IEnumerable<RateShortNbrb>> ReadCurrencyBnrbs(int currencyId, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<RateShortNbrb>> ReadCurrenciesNbrb(int currencyId, DateTime startDate, DateTime endDate)
         {
             var uriDynamics = GetUriDynamics(currencyId);
             var results = new List<RateShortNbrb>();

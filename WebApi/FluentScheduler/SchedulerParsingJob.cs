@@ -1,11 +1,10 @@
 ﻿using System.Web.Hosting;
 using BusinessLogic.RateUpdate.Interfacies;
-using FluentScheduler;
 using WebApi.FluentScheduler.Interfacies;
 
 namespace WebApi.FluentScheduler
 {
-    public class SchedulerParsingJob: IJob, IRegisteredObject, ISchedulerParsingJob
+    public class SchedulerParsingJob: IRegisteredObject, ISchedulerParsingJob
     {
         private readonly object _lock = new object();
 
@@ -15,8 +14,6 @@ namespace WebApi.FluentScheduler
 
         public SchedulerParsingJob(IRateUpdater rateUpdater)
         {
-            // Register this job with the hosting environment.
-            // Allows for a more graceful stop of the job, in the case of IIS shutting down.
             _rateUpdater = rateUpdater;
             HostingEnvironment.RegisterObject(this);
         }
@@ -27,15 +24,13 @@ namespace WebApi.FluentScheduler
             {
                 if (_shuttingDown)
                     return;
-
-                // Do work, son!
+                
                 _rateUpdater.Update().GetAwaiter().GetResult();
             }
         }
 
         public void Stop(bool immediate)
         {
-            // Locking here will wait for the lock in Execute to be released until this code can continue.
             lock (_lock)
             {
                 _shuttingDown = true;

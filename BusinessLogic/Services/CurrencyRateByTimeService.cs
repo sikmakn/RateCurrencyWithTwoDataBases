@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
@@ -12,15 +9,10 @@ namespace BusinessLogic.Services
     public class CurrencyRateByTimeService: ICurrencyRateByTimeService
     {
         private readonly ICurrencyRateByTimeRepository _currencyRateByTimeRepository;
-        private readonly IDictionaryRepository<Currency> _currencyRepository;
-        private readonly IBankRepository _bankRepository;
 
-        public CurrencyRateByTimeService(ICurrencyRateByTimeRepository currencyRateByTimeRepository, 
-            IDictionaryRepository<Currency> currencyRepository, IBankRepository bankRepository)
+        public CurrencyRateByTimeService(ICurrencyRateByTimeRepository currencyRateByTimeRepository)
         {
             _currencyRateByTimeRepository = currencyRateByTimeRepository;
-            _currencyRepository = currencyRepository;
-            _bankRepository = bankRepository;
         }
 
         public async Task<CurrencyRateByTime> GetById(int id)

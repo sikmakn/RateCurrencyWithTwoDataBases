@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using WebApi.Controllers;
 
-namespace UnitTests
+namespace UnitTests.Controllers
 {
     [TestClass]
     public class CurrencyRateByTimeControllerTests
@@ -54,6 +54,25 @@ namespace UnitTests
             Assert.AreEqual(result.Id, _currencyRates[0].CurrencyId);
             Assert.AreEqual(result.Name, _currencyRates[0].Currency.Name);
         }
+
+        [TestMethod]
+        public void GetByIncorrectId()
+        {
+            var currencyRateServiceMock = new Mock<ICurrencyRateByTimeService>();
+            currencyRateServiceMock.Setup(s => s.GetById(It.IsAny<int>())).ReturnsAsync((int s) => null);
+
+            var currencyRateController = new CurrencyRateByTimeController(currencyRateServiceMock.Object);
+
+            var rateByTimeResult = currencyRateController.GetCurrencyRateByTime(1).Result.Queryable.Single();
+            Assert.IsNull(rateByTimeResult);
+
+            var currencyResult = currencyRateController.GetCurrency(1).Result.Queryable.Single();
+            Assert.IsNull(currencyResult);
+
+            var bankDepartmentResult = currencyRateController.GetBankDepartment(1).Result.Queryable.Single();
+            Assert.IsNull(bankDepartmentResult);
+        }
+
 
         private static List<CurrencyRateByTime> InitializeList()
         {

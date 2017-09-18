@@ -45,11 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BnrbApiAccess\Models\CurrencyNbrb.cs" />
-    <Compile Include="BnrbApiAccess\Models\RateNbrb.cs" />
-    <Compile Include="BnrbApiAccess\Models\RateShortNbrb.cs" />
-    <Compile Include="BnrbApiAccess\Services\Interfacies\IRateNbrbService.cs" />
-    <Compile Include="BnrbApiAccess\Services\RateNbrbService.cs" />
+    <Compile Include="NbrbApiAccess\Models\CurrencyNbrb.cs" />
+    <Compile Include="NbrbApiAccess\Models\RateNbrb.cs" />
+    <Compile Include="NbrbApiAccess\Models\RateShortNbrb.cs" />
+    <Compile Include="NbrbApiAccess\Services\Interfacies\IRateNbrbService.cs" />
+    <Compile Include="NbrbApiAccess\Services\RateNbrbService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RateUpdate\Interfacies\IParser.cs" />
     <Compile Include="RateUpdate\Interfacies\IRateUpdater.cs" />

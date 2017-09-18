@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Script.Serialization;
-using BusinessLogic.BnrbApiAccess.Services;
 using BusinessLogic.Helpers;
 using BusinessLogic.Helpers.Interfacies;
-using DataAccess.Models;
+using BusinessLogic.NbrbApiAccess.Models;
+using BusinessLogic.NbrbApiAccess.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -25,7 +25,7 @@ namespace UnitTests
 
             var rateService = new RateNbrbService(readerMock.Object);
 
-            var result = rateService.ReadCurrencyBnrbs(1, new DateTime(2014, 07, 05), new DateTime(2016, 07, 05)).Result;
+            var result = rateService.ReadCurrenciesNbrb(1, new DateTime(2014, 07, 05), new DateTime(2016, 07, 05)).Result;
             Assert.IsNotNull(result);
             Assert.AreEqual(5, result.Count());
             for (int i = 0, j = 1; i < result.Count(); i++, j++)
@@ -43,7 +43,7 @@ namespace UnitTests
 
             var rateService = new RateNbrbService(readerMock.Object);
 
-            var result = rateService.ReadCurrencyBnrbs(1, new DateTime(2014, 07, 05), new DateTime(2016, 07, 05)).Result;
+            var result = rateService.ReadCurrenciesNbrb(1, new DateTime(2014, 07, 05), new DateTime(2016, 07, 05)).Result;
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
         }
@@ -57,7 +57,7 @@ namespace UnitTests
 
             var rateService = new RateNbrbService(readerMock.Object);
 
-            var result = rateService.ReadCurrencyBnrbs(1, new DateTime(2012, 07, 05), new DateTime(2016, 07, 05)).Result;
+            var result = rateService.ReadCurrenciesNbrb(1, new DateTime(2012, 07, 05), new DateTime(2016, 07, 05)).Result;
             Assert.IsNotNull(result);
             Assert.AreEqual(6, result.Count());
             for (int i = 0, j = 0; i < result.Count(); i++, j++)
@@ -75,7 +75,7 @@ namespace UnitTests
 
             var rateService = new RateNbrbService(readerMock.Object);
 
-            var result = rateService.ReadCurrencyBnrbs(1, new DateTime(2014, 07, 05), new DateTime(2019, 07, 05)).Result;
+            var result = rateService.ReadCurrenciesNbrb(1, new DateTime(2014, 07, 05), new DateTime(2019, 07, 05)).Result;
             Assert.IsNotNull(result);
             Assert.AreEqual(6, result.Count());
             for (int i = 0, j = 1; i < result.Count(); i++, j++)
@@ -93,7 +93,7 @@ namespace UnitTests
 
             var rateService = new RateNbrbService(readerMock.Object);
 
-            var result = rateService.ReadCurrencyBnrbs(1, new DateTime(2012, 07, 05), new DateTime(2019, 07, 05)).Result;
+            var result = rateService.ReadCurrenciesNbrb(1, new DateTime(2012, 07, 05), new DateTime(2019, 07, 05)).Result;
             Assert.IsNotNull(result);
             Assert.AreEqual(7, result.Count());
             for (int i = 0, j = 0; i < result.Count(); i++, j++)
@@ -107,7 +107,7 @@ namespace UnitTests
         {
             var rateService = new RateNbrbService(new Reader());
 
-            var result = rateService.ReadCurrencyBnrbs(-17000000, new DateTime(2012, 07, 05), new DateTime(2019, 07, 05)).Result;
+            var result = rateService.ReadCurrenciesNbrb(-17000000, new DateTime(2012, 07, 05), new DateTime(2019, 07, 05)).Result;
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
         }

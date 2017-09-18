@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccess.Models
+namespace BusinessLogic.NbrbApiAccess.Models
 {
     public class RateShortNbrb
     {
