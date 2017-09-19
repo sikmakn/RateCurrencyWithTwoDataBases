@@ -6,7 +6,7 @@ namespace DataAccess.Repositories.Interfacies
 {
     public interface ICurrencyRateByTimeRepository
     {
-        IQueryable<CurrencyRateByTime> GetAllActual();
         Task<CurrencyRateByTime> GetById(int id);
+        IQueryable<CurrencyRateByTime> GetAll();
     }
 }

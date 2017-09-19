@@ -10,7 +10,7 @@ using BusinessLogic.NbrbApiAccess.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace UnitTests
+namespace UnitTests.Services
 {
     [TestClass]
     public class RateNbrbServiceTests
@@ -19,8 +19,8 @@ namespace UnitTests
         [TestMethod]
         public void TestAtTheRightTimePeriods()
         {
-            List<RateShortNbrb> rates = Init();
-            Mock<IReader> readerMock = new Mock<IReader>();
+            var rates = Init();
+            var readerMock = new Mock<IReader>();
             readerMock.Setup(s => s.HttpClientRead(It.IsAny<string>())).ReturnsAsync((string uri) => HttpClientMock(uri, rates));
 
             var rateService = new RateNbrbService(readerMock.Object);
@@ -38,7 +38,7 @@ namespace UnitTests
         public void TestWithEmptyPeriods()
         {
             var rates = new List<RateShortNbrb>();
-            Mock<IReader> readerMock = new Mock<IReader>();
+            var readerMock = new Mock<IReader>();
             readerMock.Setup(s => s.HttpClientRead(It.IsAny<string>())).ReturnsAsync((string uri) => HttpClientMock(uri, rates));
 
             var rateService = new RateNbrbService(readerMock.Object);
@@ -52,7 +52,7 @@ namespace UnitTests
         public void TestWithEmptyStartPeriod()
         {
             var rates = Init();
-            Mock<IReader> readerMock = new Mock<IReader>();
+            var readerMock = new Mock<IReader>();
             readerMock.Setup(s => s.HttpClientRead(It.IsAny<string>())).ReturnsAsync((string uri) => HttpClientMock(uri, rates));
 
             var rateService = new RateNbrbService(readerMock.Object);
@@ -70,7 +70,7 @@ namespace UnitTests
         public void TestWithEmptyEndPeriod()
         {
             var rates = Init();
-            Mock<IReader> readerMock = new Mock<IReader>();
+            var readerMock = new Mock<IReader>();
             readerMock.Setup(s => s.HttpClientRead(It.IsAny<string>())).ReturnsAsync((string uri) => HttpClientMock(uri, rates));
 
             var rateService = new RateNbrbService(readerMock.Object);
@@ -88,7 +88,7 @@ namespace UnitTests
         public void TestWithEmptyStartAndEndPeriod()
         {
             var rates = Init();
-            Mock<IReader> readerMock = new Mock<IReader>();
+            var readerMock = new Mock<IReader>();
             readerMock.Setup(s => s.HttpClientRead(It.IsAny<string>())).ReturnsAsync((string uri) => HttpClientMock(uri, rates));
 
             var rateService = new RateNbrbService(readerMock.Object);
@@ -112,7 +112,7 @@ namespace UnitTests
             Assert.AreEqual(0, result.Count());
         }
 
-        private string HttpClientMock(string uri, List<RateShortNbrb> rates)
+        private static string HttpClientMock(string uri, IEnumerable<RateShortNbrb> rates)
         {
             if(!uri.Contains("http://www.nbrb.by/API/ExRates/Rates/Dynamics/")) throw new InvalidDataException("Invalid uri address");
             var splitStrings = uri.Split('=');
@@ -126,7 +126,7 @@ namespace UnitTests
             return jsonSerializer.Serialize(result);
         }
 
-        private List<RateShortNbrb> Init()
+        private static List<RateShortNbrb> Init()
         {
             var rateShort0 = new RateShortNbrb
             {

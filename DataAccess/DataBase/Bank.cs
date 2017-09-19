@@ -9,7 +9,6 @@
 
 namespace DataAccess.DataBase
 {
-    using System;
     using System.Collections.Generic;
     
     public partial class Bank

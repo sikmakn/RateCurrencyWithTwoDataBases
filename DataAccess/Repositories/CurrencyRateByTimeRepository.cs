@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.DataBase;
@@ -17,13 +16,9 @@ namespace DataAccess.Repositories
             _currencyRateByTimes = unitOfWork.Context.Set<CurrencyRateByTime>();
         }
 
-        public IQueryable<CurrencyRateByTime> GetAllActual()
+        public IQueryable<CurrencyRateByTime> GetAll()
         {
-            var span = new TimeSpan(4, 0, 0).TotalHours;
-            var now = DateTime.UtcNow;
-            var result = _currencyRateByTimes.Where(x => DbFunctions.DiffDays(now, x.DateTime) == 0 &&
-            DbFunctions.DiffHours(x.DateTime, now) < span);
-            return result;
+            return _currencyRateByTimes;
         }
         public async Task<CurrencyRateByTime> GetById(int id)
         {

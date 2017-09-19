@@ -9,9 +9,6 @@
 
 namespace DataAccess.DataBase
 {
-    using System;
-    using System.Collections.Generic;
-    
     public partial class CurrencyRateByTime
     {
         public int Id { get; set; }

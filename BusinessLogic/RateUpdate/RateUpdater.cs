@@ -14,7 +14,7 @@ namespace BusinessLogic.RateUpdate
 {
     public class RateUpdater: IRateUpdater
     {
-        private string url = "https://finance.tut.by/kurs/{city}/{currency}/vse-banki/?iPageNo=";
+        private const string Url = "https://finance.tut.by/kurs/{city}/{currency}/vse-banki/?iPageNo=";
 
         private readonly DictionaryRepository<City> _cityRepository;
         private readonly DictionaryRepository<Currency> _currencyRepository;
@@ -90,9 +90,9 @@ namespace BusinessLogic.RateUpdate
             }
         }
 
-        private string TransformUrl(string city, string currency)
+        private static string TransformUrl(string city, string currency)
         {
-            var urlWithData = new StringBuilder(url);
+            var urlWithData = new StringBuilder(Url);
             urlWithData = urlWithData.Replace("{currency}", currency.TrimEnd()).Replace("{city}", city.TrimEnd());
             return urlWithData.ToString();
         }
@@ -107,6 +107,7 @@ namespace BusinessLogic.RateUpdate
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
                 await _parser.ParsToIncomingBanks(incomingBanks, html, city.Id, currency.Id, dateTime);
+
             } while (_parser.HasNextPage(html));
         }
         

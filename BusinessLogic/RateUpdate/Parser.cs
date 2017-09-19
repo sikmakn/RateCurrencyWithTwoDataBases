@@ -33,32 +33,20 @@ namespace BusinessLogic.RateUpdate
 
         public async Task ParsToIncomingBanks(List<Bank> incomingBanks, string html, int cityId, int currencyId, DateTime dateTime)
         {
-            HtmlDocument htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(html);
+            var trNodes = GetTrNodes(html);
 
-            var trNodes = GetRows(htmlDocument);
             for (var i = 2; i < trNodes.Length; i++)
             {
                 var td = GetRowspan(trNodes[i]);
 
-                var purchase = Convert.ToDouble(td[1].FirstChild.InnerHtml.Replace(".", ","));
-                var sale = Convert.ToDouble(td[2].FirstChild.InnerHtml.Replace(".", ","));
-
-                var address = td[3].FirstChild.InnerHtml;
-
-                var bankName = td[0].FirstChild.FirstChild.FirstChild.OuterHtml;
-                var nameBranch = td[0].Descendants("span").ToArray()[0].InnerHtml;
-
-                var bank = SearchOrCreateBank(bankName, incomingBanks);
-
-                BankDepartment bankDepartment = await _bankDepartmentRepository.Find(address, nameBranch) ?? new BankDepartment
-                {
-                    Address = address,
-                    CityId = cityId,
-                    Name = nameBranch,
-                    CurrencyRateByTime = new List<CurrencyRateByTime>(),
-                };
-
+                var purchase = ConvertToDouble(td[1]);
+                var sale = ConvertToDouble(td[2]);
+                var address = GetAddressFromNode(td[3]);
+                var bankName = GetBankNameFromNode(td[0]);
+                var departmentName = GetBankDepartmentNameFromNode(td[0]);
+           
+                var bank = FindOrCreateBank(bankName, incomingBanks);
+                var bankDepartment = await FindOrCreateDepartment(address, departmentName, cityId);
                 var currencyRate = new CurrencyRateByTime
                 {
                     CurrencyId = currencyId,
@@ -68,13 +56,51 @@ namespace BusinessLogic.RateUpdate
                 };
 
                 bankDepartment.CurrencyRateByTime.Add(currencyRate);
-
                 bank.BankDepartment.Add(bankDepartment); 
             }
         }
         #endregion
 
-        private Bank SearchOrCreateBank(string bankName, List<Bank> banks)
+        private async Task<BankDepartment> FindOrCreateDepartment(string address, string departmentName, int cityId)
+        {
+            return await _bankDepartmentRepository.Find(address, departmentName) ?? new BankDepartment
+            {
+                Address = address,
+                CityId = cityId,
+                Name = departmentName,
+                CurrencyRateByTime = new List<CurrencyRateByTime>(),
+            };
+        }
+
+        private static string GetBankDepartmentNameFromNode(HtmlNode node)
+        {
+            return node.Descendants("span").ToArray()[0].InnerHtml;
+        }
+
+        private static string GetBankNameFromNode(HtmlNode node)
+        {
+            return node.FirstChild.FirstChild.FirstChild.OuterHtml;
+        }
+
+        private static string GetAddressFromNode(HtmlNode node)
+        {
+            return node.FirstChild.InnerHtml;
+        }
+
+        private static double ConvertToDouble(HtmlNode node)
+        {
+            var stingDouble = node.FirstChild.InnerHtml.Replace(".", ",");
+            return Convert.ToDouble(stingDouble);
+        }
+
+        private static HtmlNode[] GetTrNodes(string html)
+        {
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(html);
+            return GetRows(htmlDocument);
+        }
+
+        private static Bank FindOrCreateBank(string bankName, List<Bank> banks)
         {
             var bank = banks.Find(x => x.Name.Contains(bankName));
             if (bank != null) return bank;
@@ -88,7 +114,7 @@ namespace BusinessLogic.RateUpdate
             return bank;
         }
 
-        private HtmlNode[] GetRows(HtmlDocument htmlDocument)
+        private static HtmlNode[] GetRows(HtmlDocument htmlDocument)
         {
             var node = htmlDocument
                 .DocumentNode

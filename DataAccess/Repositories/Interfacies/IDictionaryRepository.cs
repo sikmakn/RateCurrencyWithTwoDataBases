@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using DataAccess.DataBase.Interfacies;
 
 namespace DataAccess.Repositories.Interfacies
 {
-    public interface IDictionaryRepository<T> where T: DBDictionary
+    public interface IDictionaryRepository<T> where T: class 
     {
         ICollection<T> GetAll();
     }

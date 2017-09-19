@@ -10,7 +10,7 @@ namespace BusinessLogic.Helpers
     {
         public async Task<string> HttpClientRead(string url)
         {
-            HttpClientHandler handler = new HttpClientHandler()
+            var handler = new HttpClientHandler()
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };

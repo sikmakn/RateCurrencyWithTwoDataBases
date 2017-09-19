@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
@@ -22,7 +24,15 @@ namespace BusinessLogic.Services
 
         public IQueryable<CurrencyRateByTime> GetAllActual()
         {
-            return _currencyRateByTimeRepository.GetAllActual();
+            var allRates = _currencyRateByTimeRepository.GetAll();
+            var span = new TimeSpan(4, 0, 0).TotalHours;
+            var now = DateTime.UtcNow;
+            var result = allRates.Where(x =>
+                   DbFunctions.DiffMonths(now, x.DateTime) == 0
+                && DbFunctions.DiffYears(now, x.DateTime) == 0
+                && DbFunctions.DiffDays(now, x.DateTime) == 0
+                && DbFunctions.DiffHours(x.DateTime, now) < span);
+            return result;
         }
 
         //public IQueryable<CurrencyRateByTime> GetActualByCurrency(string currency)
