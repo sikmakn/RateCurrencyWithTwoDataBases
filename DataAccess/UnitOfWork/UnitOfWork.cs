@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using DataAccess.DataBase;
-using DataAccess.DataBase.Interfacies;
 
 namespace DataAccess.UnitOfWork
 {
@@ -21,7 +18,7 @@ namespace DataAccess.UnitOfWork
             return await Context.SaveChangesAsync();
         }
 
-        private bool _disposed = false;
+        private bool _disposed;
 
         public virtual void Dispose(bool disposing)
         {

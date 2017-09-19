@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+
 namespace DataAccess.DataBase
 {
     public partial class CurrencyRateByTime
@@ -20,5 +22,16 @@ namespace DataAccess.DataBase
     
         public virtual BankDepartment BankDepartment { get; set; }
         public virtual Currency Currency { get; set; }
+
+        public static CurrencyRateByTime GetNewCurrencyRateByTime(int currencyId,DateTime dateTime, double sale, double purchase)
+        {
+            return new CurrencyRateByTime
+            {
+                Sale = sale,
+                Purchase = purchase,
+                CurrencyId =  currencyId,
+                DateTime = dateTime,
+            };
+        }
     }
 }

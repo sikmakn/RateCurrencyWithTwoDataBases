@@ -29,5 +29,16 @@ namespace DataAccess.DataBase
         public virtual City City { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CurrencyRateByTime> CurrencyRateByTime { get; set; }
+
+        public static BankDepartment GetNewBankDepartment(string address, string departmentName, int cityId)
+        {
+            return new BankDepartment
+            {
+                Address = address,
+                Name = departmentName,
+                CurrencyRateByTime = new List<CurrencyRateByTime>(),
+                CityId = cityId,
+            };
+        }
     }
 }

@@ -82,8 +82,8 @@ namespace BusinessLogic.RateUpdate
                 {
                     foreach (var rateByTime in department.CurrencyRateByTime)
                     {
-                        rateByTime.BankDepartment = oldDepartment;
-                        rateByTime.BankDepartmentId = oldDepartment.Id;
+                        //rateByTime.BankDepartment = oldDepartment;
+                        //rateByTime.BankDepartmentId = oldDepartment.Id;
                         oldDepartment.CurrencyRateByTime.Add(rateByTime);
                     }
                 }
@@ -106,7 +106,7 @@ namespace BusinessLogic.RateUpdate
                 pageNumber++;
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
-                await _parser.ParsToIncomingBanks(incomingBanks, html, city.Id, currency.Id, dateTime);
+                _parser.ParsToIncomingBanks(incomingBanks, html, city.Id, currency.Id, dateTime);
 
             } while (_parser.HasNextPage(html));
         }
