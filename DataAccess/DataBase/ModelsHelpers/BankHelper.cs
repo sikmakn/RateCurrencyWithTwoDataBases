@@ -22,16 +22,20 @@ namespace DataAccess.DataBase.ModelsHelpers
                 }
                 else
                 {
-                    var firstBankDepartment = firstBank.BankDepartment.FindDepartmentInEnumerable(secondBank.BankDepartment.Single());
-                    if (firstBankDepartment == null)
+                    foreach (var secondBankDepartment in secondBank.BankDepartment)
                     {
-                        firstBank.BankDepartment.Add(secondBank.BankDepartment.Single());
-                    }
-                    else
-                    {
-                        foreach (var rateByTime in secondBank.BankDepartment.Single().CurrencyRateByTime)
+                        var firstBankDepartment =
+                            firstBank.BankDepartment.FindDepartmentInSequence(secondBankDepartment);
+                        if (firstBankDepartment == null)
                         {
-                            firstBankDepartment.CurrencyRateByTime.Add(rateByTime);
+                            firstBank.BankDepartment.Add(secondBank.BankDepartment.Single());
+                        }
+                        else
+                        {
+                            foreach (var rateByTime in secondBank.BankDepartment.Single().CurrencyRateByTime)
+                            {
+                                firstBankDepartment.CurrencyRateByTime.Add(rateByTime);
+                            }
                         }
                     }
                 }

@@ -5,7 +5,7 @@ using BusinessLogic.RateUpdate;
 using DataAccess.DataBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests
+namespace UnitTests.RateUpdateTests
 {
     [TestClass]
     public class ParserTests

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using DataAccess.DataBase;
 using DataAccess.Repositories.Interfacies;
@@ -18,14 +17,7 @@ namespace DataAccess.Repositories
 
         public Bank Add(Bank bank)
         {
-            try
-            {
-                return _banks.Add(bank);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return _banks.Add(bank);
         }
 
         public Bank FindByName(string name)

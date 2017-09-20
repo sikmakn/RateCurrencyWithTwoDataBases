@@ -26,7 +26,7 @@ namespace BusinessLogic.Services
                 }
                 else
                 {
-                    oldBank.BankDepartment.IncludeDepartmentSequence(bank.BankDepartment);
+                    oldBank.BankDepartment.IncludeSequence(bank.BankDepartment);
                 }
             }
         }

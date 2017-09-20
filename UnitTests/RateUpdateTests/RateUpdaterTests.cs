@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BusinessLogic.Helpers.Interfacies;
@@ -9,7 +8,7 @@ using DataAccess.UnitOfWork;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace UnitTests
+namespace UnitTests.RateUpdateTests
 {
     [TestClass]
     public class RateUpdaterTests
