@@ -64,6 +64,8 @@
     <Compile Include="DataBase\CurrencyRateByTime.cs">
       <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataBase\ModelsHelpers\BankDepartmentHelper.cs" />
+    <Compile Include="DataBase\ModelsHelpers\BankHelper.cs" />
     <Compile Include="DataBase\RateCurrencyModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

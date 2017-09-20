@@ -4,7 +4,6 @@ using System.IO;
 using BusinessLogic.RateUpdate;
 using DataAccess.DataBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace UnitTests
 {
@@ -19,7 +18,7 @@ namespace UnitTests
         {
             var parser = new Parser();
 
-            var result = parser.HasNextPage(null);
+            parser.HasNextPage(null);
         }
 
         [TestMethod]
@@ -64,11 +63,12 @@ namespace UnitTests
 
         #endregion
 
+        #region ParsToIncomingBanks
         [TestMethod]
         public void TestCorrectParsToIncomingBanks()
         {
             //var text = new Reader().HttpClientRead("https://finance.tut.by/kurs/minsk/dollar/vse-banki/?iPageNo=1").Result;
-            var path = @"../../Files/Correct1.txt";
+            const string path = @"../../Files/Correct1.txt";
             //File.WriteAllText(path, text);
            
             var parser = new Parser();
@@ -76,8 +76,7 @@ namespace UnitTests
             const int cityId = 2; //minsk
             const int currencyId = 2; //dollar
 
-            var result = new List<Bank>();
-            parser.ParsToIncomingBanks(result, html, cityId, currencyId, DateTime.UtcNow);
+            var result = parser.ParsToIncomingBanks(html, cityId, currencyId, DateTime.UtcNow);
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(0, result.Count);
@@ -108,7 +107,7 @@ namespace UnitTests
             const int currencyId = 2; //dollar
 
             var result = new List<Bank>();
-            parser.ParsToIncomingBanks(result, null, cityId, currencyId, DateTime.UtcNow);
+            parser.ParsToIncomingBanks(null, cityId, currencyId, DateTime.UtcNow);
         }
 
         [TestMethod]
@@ -119,9 +118,49 @@ namespace UnitTests
             const int currencyId = 2; //dollar
 
             var result = new List<Bank>();
-            parser.ParsToIncomingBanks(result, "", cityId, currencyId, DateTime.UtcNow);
+            parser.ParsToIncomingBanks("", cityId, currencyId, DateTime.UtcNow);
 
             Assert.AreEqual(0, result.Count);
         }
+
+        [TestMethod]
+        public void TestEmptyTableHtmlHtmlParsToIncomingBanks()
+        {
+            var parser = new Parser();
+            const int cityId = 2; //minsk
+            const int currencyId = 2; //dollar
+
+            var result = new List<Bank>();
+            parser.ParsToIncomingBanks("<body><table class='tbl m-tbl'><tr><td></td></tr></table><span></span></body>", cityId, currencyId, DateTime.UtcNow);
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void TestIncorrectTableHtmlHtmlParsToIncomingBanks()
+        {
+            var parser = new Parser();
+            const int cityId = 2; //minsk
+            const int currencyId = 2; //dollar
+
+            var result = new List<Bank>();
+            parser.ParsToIncomingBanks("<body><table><tr><td></td></tr></table><span></span></body>", cityId, currencyId, DateTime.UtcNow);
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void TestIncorrectHtmlHtmlParsToIncomingBanks()
+        {
+            var parser = new Parser();
+            const int cityId = 2; //minsk
+            const int currencyId = 2; //dollar
+
+            var result = new List<Bank>();
+            parser.ParsToIncomingBanks("gbsfbaraebfbelafbkbfjkbfjebfebwjhfbaklefjh", cityId, currencyId, DateTime.UtcNow);
+
+            Assert.AreEqual(0, result.Count);
+        }
+        #endregion
     }
 }

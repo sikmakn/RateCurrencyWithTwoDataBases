@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Helpers.Interfacies;
 using BusinessLogic.RateUpdate.Interfacies;
+using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
+using DataAccess.DataBase.ModelsHelpers;
 using DataAccess.Repositories;
-using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
 
 namespace BusinessLogic.RateUpdate
@@ -18,15 +19,15 @@ namespace BusinessLogic.RateUpdate
 
         private readonly DictionaryRepository<City> _cityRepository;
         private readonly DictionaryRepository<Currency> _currencyRepository;
-        private readonly IBankRepository _bankRepository;
+        private readonly IBankService _bankService;
         private readonly IParser _parser;
         private readonly IReader _reader;
         private readonly IUnitOfWork _unitOfWork;
 
         public RateUpdater(DictionaryRepository<City> cityRepository, DictionaryRepository<Currency> currencyRepository,
-                            IParser parser, IReader reader, IBankRepository bankRepository, IUnitOfWork unitOfWork)
+                            IParser parser, IReader reader, IBankService bankService, IUnitOfWork unitOfWork)
         {
-            _bankRepository = bankRepository;
+            _bankService = bankService;
             _unitOfWork = unitOfWork;
             _reader = reader;
             _parser = parser;
@@ -39,55 +40,15 @@ namespace BusinessLogic.RateUpdate
             var dateTime = DateTime.UtcNow;
             var cities = _cityRepository.GetAll();
             var currencies = _currencyRepository.GetAll();
-
-            var banks = new List<Bank>();
-            foreach (var city in cities)
-            {
-                foreach (var currency in currencies)
-                {
-                    await DepartmentsByAllPagesToIncomingBanks(banks, city, currency, dateTime);
-                }
-            }
-            AddBanksIsNotExistOrAddDepartments(banks);
+            var tasks = (from city in cities
+                         from currency in currencies
+                         select DepartmentsByAllPages(city, currency, dateTime)).ToList();
+            await Task.WhenAll(tasks);
+            var results = new List<Bank>();
+            tasks.ForEach(x => results.IncludeSequence(x.Result));
+            
+            _bankService.IncludeSequenceToDataBase(results);
             await _unitOfWork.SaveChangesAsync();
-        }
-
-        private void AddBanksIsNotExistOrAddDepartments(IEnumerable<Bank> banks)
-        {
-            foreach (var bank in banks)
-            {
-                var oldBank = _bankRepository.FindByName(bank.Name);
-                if (oldBank == null)
-                {
-                    _bankRepository.Add(bank);
-                }
-                else
-                {
-                    AddDepartmetIsNotExistOrAddRate(bank.BankDepartment, oldBank.BankDepartment);
-                }
-            }
-        }
-
-        private static void AddDepartmetIsNotExistOrAddRate(IEnumerable<BankDepartment> departments, ICollection<BankDepartment> oldDepartments)
-        {
-            foreach (var department in departments)
-            {
-                var oldDepartment = oldDepartments.FirstOrDefault(x =>
-                    x.Name.Contains(department.Name) && x.Address.Contains(department.Address));
-                if (oldDepartment == null)
-                {
-                    oldDepartments.Add(department);
-                }
-                else
-                {
-                    foreach (var rateByTime in department.CurrencyRateByTime)
-                    {
-                        //rateByTime.BankDepartment = oldDepartment;
-                        //rateByTime.BankDepartmentId = oldDepartment.Id;
-                        oldDepartment.CurrencyRateByTime.Add(rateByTime);
-                    }
-                }
-            }
         }
 
         private static string TransformUrl(string city, string currency)
@@ -97,8 +58,9 @@ namespace BusinessLogic.RateUpdate
             return urlWithData.ToString();
         }
 
-        private async Task DepartmentsByAllPagesToIncomingBanks(List<Bank> incomingBanks, City city, Currency currency, DateTime dateTime)
+        private async Task<List<Bank>> DepartmentsByAllPages(City city, Currency currency, DateTime dateTime)
         {
+            var banks = new List<Bank>();
             string html;
             var pageNumber = 0;
             do
@@ -106,10 +68,12 @@ namespace BusinessLogic.RateUpdate
                 pageNumber++;
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
-                _parser.ParsToIncomingBanks(incomingBanks, html, city.Id, currency.Id, dateTime);
+                var pagesBanks =_parser.ParsToIncomingBanks(html, city.Id, currency.Id, dateTime);
+                banks.IncludeSequence(pagesBanks);
 
             } while (_parser.HasNextPage(html));
+            return banks;
         }
-        
+
     }
 }

@@ -63,7 +63,9 @@
     <Compile Include="RateUpdate\Parser.cs" />
     <Compile Include="RateUpdate\RateUpdater.cs" />
     <Compile Include="Helpers\Reader.cs" />
+    <Compile Include="Services\BankService.cs" />
     <Compile Include="Services\CurrencyRateByTimeService.cs" />
+    <Compile Include="Services\Interfacies\IBankService.cs" />
     <Compile Include="Services\Interfacies\ICurrencyRateByTimeService.cs" />
   </ItemGroup>
   <ItemGroup>

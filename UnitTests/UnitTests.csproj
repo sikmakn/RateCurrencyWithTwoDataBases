@@ -98,6 +98,7 @@
     <Compile Include="Services\RateNbrbServiceTests.cs" />
     <Compile Include="ParserTests.cs" />
     <Compile Include="ReaderTests.cs" />
+    <Compile Include="RateUpdaterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

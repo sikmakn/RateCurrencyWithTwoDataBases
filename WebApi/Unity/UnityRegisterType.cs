@@ -36,6 +36,8 @@ namespace WebApi.Unity
 
             container.RegisterType<ICurrencyRateByTimeRepository, CurrencyRateByTimeRepository>();
             container.RegisterType<ICurrencyRateByTimeService, CurrencyRateByTimeService>();
+
+            container.RegisterType<IBankService, BankService>();
             
             container.RegisterType<IRateNbrbService, RateNbrbService>();
             return container;

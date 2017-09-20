@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.RateUpdate.Interfacies;
 using DataAccess.DataBase;
+using DataAccess.DataBase.ModelsHelpers;
 using HtmlAgilityPack;
 
 namespace BusinessLogic.RateUpdate
@@ -21,19 +22,11 @@ namespace BusinessLogic.RateUpdate
             return nextPageArrow != null;
         }
 
-        public void ParsToIncomingBanks(List<Bank> incomingBanks, string html, int cityId, int currencyId, DateTime dateTime)
+        public List<Bank> ParsToIncomingBanks(string html, int cityId, int currencyId, DateTime dateTime)
         {
-            
-            HtmlNode[] trNodes;
-            try
-            {
-                trNodes = GetTrNodes(html);
-            }
-            catch (NullReferenceException ex)
-            {
-                throw ex;
-            }
+            var trNodes = GetTrNodes(html);
 
+            var banks = new List<Bank>();
             for (var i = 2; i < trNodes.Length; i++)
             {
                 var td = GetRowspan(trNodes[i]);
@@ -44,13 +37,14 @@ namespace BusinessLogic.RateUpdate
                 var bankName = GetBankNameFromNode(td[0]);
                 var departmentName = GetBankDepartmentNameFromNode(td[0]);
 
-                var bank = FindOrCreateBank(bankName, incomingBanks);
-                var bankDepartment = BankDepartment.GetNewBankDepartment(address, departmentName, cityId);
+                var bank = FindOrCreateBank(bankName, banks);
+                var bankDepartment = BankDepartmentHelper.GetNewBankDepartment(address, departmentName, cityId);
                 var currencyRate = CurrencyRateByTime.GetNewCurrencyRateByTime(currencyId, dateTime, sale, purchase);
 
                 bankDepartment.CurrencyRateByTime.Add(currencyRate);
                 bank.BankDepartment.Add(bankDepartment);
             }
+            return banks;
         }
         #endregion
 
@@ -86,15 +80,8 @@ namespace BusinessLogic.RateUpdate
 
         private static HtmlNode[] GetTrNodes(string html)
         {
-            try
-            {
-                var htmlDocument = CreateHtmlDocument(html);
-                return GetRows(htmlDocument);
-            }
-            catch (NullReferenceException ex)
-            { 
-                throw ex;
-            }
+            var htmlDocument = CreateHtmlDocument(html);
+            return GetRows(htmlDocument);
         }
 
         private static Bank FindOrCreateBank(string bankName, List<Bank> banks)
@@ -119,13 +106,14 @@ namespace BusinessLogic.RateUpdate
                 .FirstOrDefault(x => x.Attributes.Contains("class") &&
                             x.Attributes["class"].Value == "tbl m-tbl");
             var trNodes = node?.Descendants("tr").ToArray();
-            return trNodes;
+            return trNodes ?? new HtmlNode[0];
         }
 
         private static HtmlNode[] GetRowspan(HtmlNode tr)
         {
             var td = tr?.Descendants("td").ToArray();
-            return td;
+            return td ?? new HtmlNode[0];
         }
+
     }
 }
