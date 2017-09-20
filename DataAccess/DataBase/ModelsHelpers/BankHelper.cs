@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace DataAccess.DataBase.ModelsHelpers
@@ -9,6 +7,7 @@ namespace DataAccess.DataBase.ModelsHelpers
     {
         public static bool EqualsByName(this Bank source, Bank toCompare)
         {
+            if (source.Name == null && toCompare.Name == null) return false;
             return source.Name == toCompare.Name;
         }
 

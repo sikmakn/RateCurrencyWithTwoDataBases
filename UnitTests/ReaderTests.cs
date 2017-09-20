@@ -12,7 +12,7 @@ namespace UnitTests
         public void TestNotValidSiteUri()
         {
             var reader = new Reader();
-            var result = reader.HttpClientRead("https://dscksdmclskdm.com").Result;            
+            var result = reader.HttpClientRead("https://dscksdmclskdm.com").Result;
         }
 
         [TestMethod]
