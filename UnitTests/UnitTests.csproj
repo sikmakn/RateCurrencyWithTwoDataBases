@@ -101,6 +101,7 @@
     <Compile Include="RateUpdateTests\ParserTests.cs" />
     <Compile Include="ReaderTests.cs" />
     <Compile Include="RateUpdateTests\RateUpdaterTests.cs" />
+    <Compile Include="Services\BankServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

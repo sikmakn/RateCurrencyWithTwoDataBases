@@ -28,11 +28,11 @@ namespace DataAccess.DataBase.ModelsHelpers
                             firstBank.BankDepartment.FindDepartmentInSequence(secondBankDepartment);
                         if (firstBankDepartment == null)
                         {
-                            firstBank.BankDepartment.Add(secondBank.BankDepartment.Single());
+                            firstBank.BankDepartment.Add(secondBankDepartment);
                         }
                         else
                         {
-                            foreach (var rateByTime in secondBank.BankDepartment.Single().CurrencyRateByTime)
+                            foreach (var rateByTime in secondBankDepartment.CurrencyRateByTime)
                             {
                                 firstBankDepartment.CurrencyRateByTime.Add(rateByTime);
                             }

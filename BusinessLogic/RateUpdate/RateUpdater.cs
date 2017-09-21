@@ -8,7 +8,7 @@ using BusinessLogic.RateUpdate.Interfacies;
 using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
 using DataAccess.DataBase.ModelsHelpers;
-using DataAccess.Repositories;
+using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
 
 namespace BusinessLogic.RateUpdate
@@ -17,14 +17,14 @@ namespace BusinessLogic.RateUpdate
     {
         private const string Url = "https://finance.tut.by/kurs/{city}/{currency}/vse-banki/?iPageNo=";
 
-        private readonly DictionaryRepository<City> _cityRepository;
-        private readonly DictionaryRepository<Currency> _currencyRepository;
+        private readonly IDictionaryRepository<City> _cityRepository;
+        private readonly IDictionaryRepository<Currency> _currencyRepository;
         private readonly IBankService _bankService;
         private readonly IParser _parser;
         private readonly IReader _reader;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RateUpdater(DictionaryRepository<City> cityRepository, DictionaryRepository<Currency> currencyRepository,
+        public RateUpdater(IDictionaryRepository<City> cityRepository, IDictionaryRepository<Currency> currencyRepository,
                             IParser parser, IReader reader, IBankService bankService, IUnitOfWork unitOfWork)
         {
             _bankService = bankService;
@@ -42,7 +42,8 @@ namespace BusinessLogic.RateUpdate
             var currencies = _currencyRepository.GetAll();
             var tasks = (from city in cities
                          from currency in currencies
-                         select DepartmentsByAllPages(city, currency, dateTime)).ToList();
+                         select DepartmentsByAllPages(city, currency, dateTime))
+                         .ToList();
             await Task.WhenAll(tasks);
             var results = new List<Bank>();
             tasks.ForEach(x => results.IncludeSequence(x.Result));
@@ -70,7 +71,6 @@ namespace BusinessLogic.RateUpdate
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
                 var pagesBanks =_parser.ParsToIncomingBanks(html, city.Id, currency.Id, dateTime);
                 banks.IncludeSequence(pagesBanks);
-
             } while (_parser.HasNextPage(html));
             return banks;
         }

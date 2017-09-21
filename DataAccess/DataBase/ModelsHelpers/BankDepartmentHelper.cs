@@ -22,7 +22,9 @@ namespace DataAccess.DataBase.ModelsHelpers
             if (secondDepartment == null) throw new NullReferenceException();
 
             if (secondDepartment.Name == null && secondDepartment.Address == null)
+            {
                 return firstDepartment.Name == null && firstDepartment.Address == null;
+            }
 
             if (secondDepartment.Name == null)
             {

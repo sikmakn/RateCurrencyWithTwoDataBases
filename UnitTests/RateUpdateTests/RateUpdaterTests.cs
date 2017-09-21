@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Helpers.Interfacies;
+using BusinessLogic.RateUpdate;
+using BusinessLogic.RateUpdate.Interfacies;
+using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
 using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
@@ -14,22 +17,242 @@ namespace UnitTests.RateUpdateTests
     public class RateUpdaterTests
     {
         [TestMethod]
-        public void TestCorrectData()
+        public void TestDifferenceBanks()
         {
-            var bankReposotitoryMock = BankRepositoryMock();
             var cityRepositoryMock = CityRepositoryMock();
             var currencyRepositoryMock = CurrencyRepositoryMock();
             var unitOfWorkMock = UnitOfWorkMock();
             var readerMock = ReaderMock();
 
+            IEnumerable<Bank> result = new List<Bank>();
+            var bankServiceMock = new Mock<IBankService>();
+            bankServiceMock.Setup(x => x.IncludeSequenceToDataBase(It.IsAny<IEnumerable<Bank>>()))
+                .Callback((IEnumerable<Bank> b) => { result = b; });
 
+            var parserResult1 = new List<Bank>
+            {
+                new Bank
+                {
+                    Name = "Bank1",
+                    BankDepartment = new List<BankDepartment>
+                    {
+                        new BankDepartment
+                        {
+                            Address = "Address1",
+                            Name = "Department1",
+                            CurrencyRateByTime = new List<CurrencyRateByTime>
+                            {
+                                new CurrencyRateByTime
+                                {
+                                    CurrencyId = 1,
+                                    Sale = 1,
+                                    Purchase = 1
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var parserResult2 = new List<Bank>
+            {
+                new Bank
+                {
+                    Name = "Bank2",
+                    BankDepartment = new List<BankDepartment>
+                    {
+                        new BankDepartment
+                        {
+                            Address = "Address2",
+                            Name = "Department2",
+                            CurrencyRateByTime = new List<CurrencyRateByTime>
+                            {
+                                new CurrencyRateByTime
+                                {
+                                    CurrencyId = 2,
+                                    Sale = 2,
+                                    Purchase = 2
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var parserMock = ParserMock(parserResult1, parserResult2);
+
+            var rateUpdater = new RateUpdater(cityRepositoryMock.Object, currencyRepositoryMock.Object, parserMock.Object, 
+                readerMock.Object, bankServiceMock.Object, unitOfWorkMock.Object);
+
+            rateUpdater.Update().GetAwaiter();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(parserResult1[0].BankDepartment.Count, result.FirstOrDefault().BankDepartment.Count);
+            Assert.AreEqual(parserResult2[0].BankDepartment.Count, result.LastOrDefault().BankDepartment.Count);
         }
 
+
+        [TestMethod]
+        public void TestSamebanksAndDifferenceDepartments()
+        {
+            var cityRepositoryMock = CityRepositoryMock();
+            var currencyRepositoryMock = CurrencyRepositoryMock();
+            var unitOfWorkMock = UnitOfWorkMock();
+            var readerMock = ReaderMock();
+
+            IEnumerable<Bank> result = new List<Bank>();
+            var bankServiceMock = new Mock<IBankService>();
+            bankServiceMock.Setup(x => x.IncludeSequenceToDataBase(It.IsAny<IEnumerable<Bank>>()))
+                .Callback((IEnumerable<Bank> b) => { result = b; });
+
+            var parserResult1 = new List<Bank>
+            {
+                new Bank
+                {
+                    Name = "Bank1",
+                    BankDepartment = new List<BankDepartment>
+                    {
+                        new BankDepartment
+                        {
+                            Address = "Address1",
+                            Name = "Department1",
+                            CurrencyRateByTime = new List<CurrencyRateByTime>
+                            {
+                                new CurrencyRateByTime
+                                {
+                                    CurrencyId = 1,
+                                    Sale = 1,
+                                    Purchase = 1
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var parserResult2 = new List<Bank>
+            {
+                new Bank
+                {
+                    Name = "Bank1",
+                    BankDepartment = new List<BankDepartment>
+                    {
+                        new BankDepartment
+                        {
+                            Address = "Address2",
+                            Name = "Department2",
+                            CurrencyRateByTime = new List<CurrencyRateByTime>
+                            {
+                                new CurrencyRateByTime
+                                {
+                                    CurrencyId = 2,
+                                    Sale = 2,
+                                    Purchase = 2
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var parserMock = ParserMock(parserResult1, parserResult2);
+
+            var rateUpdater = new RateUpdater(cityRepositoryMock.Object, currencyRepositoryMock.Object, parserMock.Object,
+                readerMock.Object, bankServiceMock.Object, unitOfWorkMock.Object);
+
+            rateUpdater.Update().GetAwaiter();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(2, result.FirstOrDefault().BankDepartment.Count);
+        }
+
+        [TestMethod]
+        public void TestSamebanksAndSameDepartments()
+        {
+            var cityRepositoryMock = CityRepositoryMock();
+            var currencyRepositoryMock = CurrencyRepositoryMock();
+            var unitOfWorkMock = UnitOfWorkMock();
+            var readerMock = ReaderMock();
+
+            IEnumerable<Bank> result = new List<Bank>();
+            var bankServiceMock = new Mock<IBankService>();
+            bankServiceMock.Setup(x => x.IncludeSequenceToDataBase(It.IsAny<IEnumerable<Bank>>()))
+                .Callback((IEnumerable<Bank> b) => { result = b; });
+
+            var parserResult1 = new List<Bank>
+            {
+                new Bank
+                {
+                    Name = "Bank1",
+                    BankDepartment = new List<BankDepartment>
+                    {
+                        new BankDepartment
+                        {
+                            Address = "Address1",
+                            Name = "Department1",
+                            CurrencyRateByTime = new List<CurrencyRateByTime>
+                            {
+                                new CurrencyRateByTime
+                                {
+                                    CurrencyId = 1,
+                                    Sale = 1,
+                                    Purchase = 1
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var parserResult2 = new List<Bank>
+            {
+                new Bank
+                {
+                    Name = "Bank1",
+                    BankDepartment = new List<BankDepartment>
+                    {
+                        new BankDepartment
+                        {
+                            Address = "Address1",
+                            Name = "Department1",
+                            CurrencyRateByTime = new List<CurrencyRateByTime>
+                            {
+                                new CurrencyRateByTime
+                                {
+                                    CurrencyId = 2,
+                                    Sale = 2,
+                                    Purchase = 2
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            var parserMock = ParserMock(parserResult1, parserResult2);
+
+            var rateUpdater = new RateUpdater(cityRepositoryMock.Object, currencyRepositoryMock.Object, parserMock.Object,
+                readerMock.Object, bankServiceMock.Object, unitOfWorkMock.Object);
+
+            rateUpdater.Update().GetAwaiter();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.FirstOrDefault().BankDepartment.Count);
+            Assert.AreEqual(2, result.FirstOrDefault().BankDepartment.FirstOrDefault().CurrencyRateByTime.Count);
+        }
+
+        #region InitializeMocks
+
+        private static Mock<IParser> ParserMock(List<Bank> result1, List<Bank> result2)
+        {
+            var parserMock = new Mock<IParser>();
+            parserMock.Setup(s => s.HasNextPage(It.IsAny<string>())).Returns(false);
+            parserMock.Setup(s =>
+                    s.ParsToIncomingBanks(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<DateTime>()))
+                .Returns((string h, int cityId, int currencyId, DateTime d) => currencyId == 1 ? result1 : result2);
+            return parserMock;
+        }
   
         private static Mock<IReader> ReaderMock()
         {
-            const string path = @"../../Files/Correct1.txt";
-            var html = File.ReadAllText(path);
+            const string html = "some html";
             var readerMock = new Mock<IReader>();
             readerMock.Setup(x => x.HttpClientRead(It.IsAny<string>())).ReturnsAsync(html);
             return readerMock;
@@ -50,6 +273,11 @@ namespace UnitTests.RateUpdateTests
                     Id = 1,
                     Name = "dollar"
                 },
+                new Currency
+                {
+                    Id = 2,
+                    Name = "euro"
+                },
             };
             currencyRepository.Setup(x => x.GetAll()).Returns(currencies);
             return currencyRepository;
@@ -69,33 +297,7 @@ namespace UnitTests.RateUpdateTests
             cityRepository.Setup(x => x.GetAll()).Returns(cities);
             return cityRepository;
         }
-        private static Mock<IBankRepository> BankRepositoryMock()
-        {
-            var bankReposotitory = new Mock<IBankRepository>();
-            var banks = new Dictionary<string, Bank>();
-            var bankId = 0;
-            var departmentId = 0;
-            bankReposotitory.Setup(x => x.Add(It.IsAny<Bank>())).Returns((Bank b) =>
-            {
-                b.Id = bankId;
-                bankId++;
-                foreach (var department in b.BankDepartment)
-                {
-                    department.BankId = b.Id;
-                    department.Bank = b;
-                    foreach (var rateByTime in department.CurrencyRateByTime)
-                    {
-                        rateByTime.BankDepartment = department;
-                        rateByTime.BankDepartmentId = departmentId;
-                        departmentId++;
-                    }
-                }
-                banks.Add(b.Name, b);
-                return b;
-            });
 
-            bankReposotitory.Setup(x => x.FindByName(It.IsAny<string>())).Returns((string key) => banks.FirstOrDefault(x => x.Key == key).Value);
-            return bankReposotitory;
-        }
+        #endregion
     }
 }
