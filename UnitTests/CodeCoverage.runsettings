@@ -7,8 +7,8 @@
           
           <ModulePaths>
             <Exclude>
-              <ModulePath>.\\bin\\debug\\*.dll</ModulePath>
-              <ModulePath>.\\bin\\release\\*.dll</ModulePath>
+              <ModulePath>.\\bin\\debug\\*</ModulePath>
+              <ModulePath>.\\bin\\release\\*</ModulePath>
             </Exclude>
           </ModulePaths>
 
