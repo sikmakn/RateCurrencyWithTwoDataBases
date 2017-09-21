@@ -22,7 +22,6 @@ namespace WebApi.Unity
         {
             var container = new UnityContainer();
             container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
-            container.RegisterType<IBankDepartmentRepository, BankDepartmentRepository>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IDictionaryRepository<City>, DictionaryRepository<City>>(new HierarchicalLifetimeManager());
             container.RegisterType<IDictionaryRepository<Currency>, DictionaryRepository<Currency>>(new HierarchicalLifetimeManager());

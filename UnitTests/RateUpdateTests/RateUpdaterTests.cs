@@ -26,7 +26,7 @@ namespace UnitTests.RateUpdateTests
 
             IEnumerable<Bank> result = new List<Bank>();
             var bankServiceMock = new Mock<IBankService>();
-            bankServiceMock.Setup(x => x.IncludeSequenceToDataBase(It.IsAny<IEnumerable<Bank>>()))
+            bankServiceMock.Setup(x => x.IncludeSequenceToDataBaseAsync(It.IsAny<IEnumerable<Bank>>()))
                 .Callback((IEnumerable<Bank> b) => { result = b; });
 
             var parserResult1 = new List<Bank>
@@ -101,7 +101,7 @@ namespace UnitTests.RateUpdateTests
 
             IEnumerable<Bank> result = new List<Bank>();
             var bankServiceMock = new Mock<IBankService>();
-            bankServiceMock.Setup(x => x.IncludeSequenceToDataBase(It.IsAny<IEnumerable<Bank>>()))
+            bankServiceMock.Setup(x => x.IncludeSequenceToDataBaseAsync(It.IsAny<IEnumerable<Bank>>()))
                 .Callback((IEnumerable<Bank> b) => { result = b; });
 
             var parserResult1 = new List<Bank>
@@ -174,7 +174,7 @@ namespace UnitTests.RateUpdateTests
 
             IEnumerable<Bank> result = new List<Bank>();
             var bankServiceMock = new Mock<IBankService>();
-            bankServiceMock.Setup(x => x.IncludeSequenceToDataBase(It.IsAny<IEnumerable<Bank>>()))
+            bankServiceMock.Setup(x => x.IncludeSequenceToDataBaseAsync(It.IsAny<IEnumerable<Bank>>()))
                 .Callback((IEnumerable<Bank> b) => { result = b; });
 
             var parserResult1 = new List<Bank>

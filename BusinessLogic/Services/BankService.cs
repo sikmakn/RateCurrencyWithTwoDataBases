@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
 using DataAccess.DataBase.ModelsHelpers;
@@ -15,11 +16,11 @@ namespace BusinessLogic.Services
             _bankRepository = bankRepository;
         }
 
-        public void IncludeSequenceToDataBase(IEnumerable<Bank> banks)
+        public async Task IncludeSequenceToDataBaseAsync(IEnumerable<Bank> banks)
         {
             foreach (var bank in banks)
             {
-                var oldBank = _bankRepository.FindByName(bank.Name);
+                var oldBank = await _bankRepository.FindByNameAsync(bank.Name);
                 if (oldBank == null)
                 {
                     _bankRepository.Add(bank);

@@ -1,10 +1,11 @@
-﻿using DataAccess.DataBase;
+﻿using System.Threading.Tasks;
+using DataAccess.DataBase;
 
 namespace DataAccess.Repositories.Interfacies
 {
     public interface IBankRepository
     {
         Bank Add(Bank bank);
-        Bank FindByName(string name);
+        Task<Bank> FindByNameAsync(string name);
     }
 }

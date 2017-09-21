@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using System.Linq;
+using System.Threading.Tasks;
 using DataAccess.DataBase;
 using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
@@ -20,9 +20,9 @@ namespace DataAccess.Repositories
             return _banks.Add(bank);
         }
 
-        public Bank FindByName(string name)
+        public async Task<Bank> FindByNameAsync(string name)
         {
-            return _banks.FirstOrDefault(x => x.Name == name);
+            return await _banks.FirstOrDefaultAsync(x => x.Name == name);
         }
     }
 }

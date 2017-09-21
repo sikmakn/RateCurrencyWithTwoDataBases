@@ -48,7 +48,7 @@ namespace BusinessLogic.RateUpdate
             var results = new List<Bank>();
             tasks.ForEach(x => results.IncludeSequence(x.Result));
             
-            _bankService.IncludeSequenceToDataBase(results);
+            await _bankService.IncludeSequenceToDataBaseAsync(results);
             await _unitOfWork.SaveChangesAsync();
         }
 

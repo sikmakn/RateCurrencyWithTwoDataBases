@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.Services;
 using DataAccess.DataBase;
@@ -56,7 +55,7 @@ namespace UnitTests.Services
 
             var bankService = new BankService(bankReposotitoryMock.Object);
 
-            bankService.IncludeSequenceToDataBase(inputbanks);
+            bankService.IncludeSequenceToDataBaseAsync(inputbanks).GetAwaiter();
 
             Assert.IsNotNull(banks);
             Assert.AreEqual(2, banks.Count);
@@ -105,7 +104,7 @@ namespace UnitTests.Services
 
             var bankService = new BankService(bankReposotitoryMock.Object);
 
-            bankService.IncludeSequenceToDataBase(inputbanks);
+            bankService.IncludeSequenceToDataBaseAsync(inputbanks).GetAwaiter();
 
             Assert.IsNotNull(banks);
             Assert.AreEqual(1, banks.Count);
@@ -137,7 +136,7 @@ namespace UnitTests.Services
 
             var bankService = new BankService(bankReposotitoryMock.Object);
 
-            bankService.IncludeSequenceToDataBase(inputbanks);
+            bankService.IncludeSequenceToDataBaseAsync(inputbanks).GetAwaiter();
 
             Assert.IsNotNull(banks);
             Assert.AreEqual(1, banks.Count);
@@ -171,7 +170,7 @@ namespace UnitTests.Services
 
             var bankService = new BankService(bankReposotitoryMock.Object);
 
-            bankService.IncludeSequenceToDataBase(inputbanks);
+            bankService.IncludeSequenceToDataBaseAsync(inputbanks).GetAwaiter();
 
             Assert.IsNotNull(banks);
             Assert.AreEqual(1, banks.Count);
@@ -179,7 +178,6 @@ namespace UnitTests.Services
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException), "Nullable input argument inappropriately allow.")]
         public void TestNullableInputSequence()
         {
             var banks = new Dictionary<string, Bank>
@@ -204,7 +202,9 @@ namespace UnitTests.Services
             
             var bankService = new BankService(bankReposotitoryMock.Object);
 
-            bankService.IncludeSequenceToDataBase(null);
+            bankService.IncludeSequenceToDataBaseAsync(null).GetAwaiter();
+            Assert.AreEqual(1, banks.Count);
+            Assert.AreEqual(1, banks["Bank1"].BankDepartment.Count);
         }
         #endregion
 
@@ -232,7 +232,7 @@ namespace UnitTests.Services
                 return b;
             });
 
-            bankReposotitory.Setup(x => x.FindByName(It.IsAny<string>())).Returns((string key) => banks.FirstOrDefault(x => x.Key == key).Value);
+            bankReposotitory.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((string key) => banks.FirstOrDefault(x => x.Key == key).Value);
             return bankReposotitory;
         }
     }

@@ -97,11 +97,13 @@
     <Compile Include="EFEntitiesHelpers\BankHelperTests.cs" />
     <Compile Include="EFEntitiesHelpers\BankDepartmentHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BankRepositoryTests.cs" />
     <Compile Include="Services\RateNbrbServiceTests.cs" />
     <Compile Include="RateUpdateTests\ParserTests.cs" />
     <Compile Include="ReaderTests.cs" />
     <Compile Include="RateUpdateTests\RateUpdaterTests.cs" />
     <Compile Include="Services\BankServiceTests.cs" />
+    <Compile Include="TestDbAsyncQueryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
