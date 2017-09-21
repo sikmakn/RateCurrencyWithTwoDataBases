@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using BusinessLogic.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class ReaderTests
     {

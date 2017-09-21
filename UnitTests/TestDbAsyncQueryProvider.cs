@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace UnitTests
 {
+    [ExcludeFromCodeCoverage]
     internal class TestDbAsyncQueryProvider<TEntity> : IDbAsyncQueryProvider
     {
         private readonly IQueryProvider _inner;
@@ -47,6 +49,7 @@ namespace UnitTests
         }
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestDbAsyncEnumerable<T> : EnumerableQuery<T>, IDbAsyncEnumerable<T>, IQueryable<T>
     {
         public TestDbAsyncEnumerable(IEnumerable<T> enumerable)
@@ -70,6 +73,7 @@ namespace UnitTests
         IQueryProvider IQueryable.Provider => new TestDbAsyncQueryProvider<T>(this);
     }
 
+    [ExcludeFromCodeCoverage]
     internal class TestDbAsyncEnumerator<T> : IDbAsyncEnumerator<T>
     {
         private readonly IEnumerator<T> _inner;

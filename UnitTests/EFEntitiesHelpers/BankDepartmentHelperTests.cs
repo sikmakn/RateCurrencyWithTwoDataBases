@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using DataAccess.DataBase;
 using DataAccess.DataBase.ModelsHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.EFEntitiesHelpers
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class BankDepartmentHelperTests
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using BusinessLogic.Helpers.Interfacies;
 using BusinessLogic.RateUpdate;
@@ -13,6 +14,7 @@ using Moq;
 
 namespace UnitTests.RateUpdateTests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class RateUpdaterTests
     {

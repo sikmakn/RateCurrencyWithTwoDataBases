@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
@@ -9,6 +10,7 @@ using WebApi.Controllers;
 
 namespace UnitTests.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class CurrencyRateByTimeControllerTests
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Web.Script.Serialization;
@@ -12,6 +13,7 @@ using Moq;
 
 namespace UnitTests.Services
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class RateNbrbServiceTests
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using BusinessLogic.RateUpdate;
 using DataAccess.DataBase;
@@ -7,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests.RateUpdateTests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class ParserTests
     {

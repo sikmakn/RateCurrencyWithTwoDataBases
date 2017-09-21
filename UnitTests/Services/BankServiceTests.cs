@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using BusinessLogic.Services;
 using DataAccess.DataBase;
@@ -8,6 +9,7 @@ using Moq;
 
 namespace UnitTests.Services
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class BankServiceTests
     {
