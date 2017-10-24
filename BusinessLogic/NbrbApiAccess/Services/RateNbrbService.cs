@@ -81,15 +81,8 @@ namespace BusinessLogic.NbrbApiAccess.Services
 
         private async Task<List<T>> GetObjectListByUriAsync<T>(string uri)
         {
-            try
-            {
                 var json = await _reader.HttpClientRead(uri);
                 return JsonSerializer.Deserialize<List<T>>(json);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
         }
 
         #endregion

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DataAccess.DataBase;
+using DataAccess.MongoDB;
 
 namespace DataAccess.UnitOfWork
 {
     public class UnitOfWork: IUnitOfWork, IDisposable
     {
         public RateCurrencyContext Context { get; } = new RateCurrencyContext();
+        public MongoDbContext MongoContext { get; } = new MongoDbContext();
 
         public int SaveChanges()
         {
