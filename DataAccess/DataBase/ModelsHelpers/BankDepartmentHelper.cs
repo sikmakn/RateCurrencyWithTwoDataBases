@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataAccess.ModelsForServices;
 
 namespace DataAccess.DataBase.ModelsHelpers
 {
     public static class BankDepartmentHelper
     {
-        public static BankDepartment GetNewBankDepartment(string address, string departmentName, int cityId)
+        public static BankDepartmentServiceModel GetNewBankDepartment(string address, string departmentName, string cityId)
         {
-            return new BankDepartment
+            return new BankDepartmentServiceModel
             {
                 Address = address,
                 Name = departmentName,
-                CurrencyRateByTime = new List<CurrencyRateByTime>(),
+                CurrencyRateByTime = new List<CurrencyRateByTimeServiceModel>(),
                 CityId = cityId,
             };
         }
 
-        public static bool EqualsByNameAndAddress(this BankDepartment firstDepartment, BankDepartment secondDepartment)
+        public static bool EqualsByNameAndAddress(this BankDepartmentServiceModel firstDepartment, BankDepartmentServiceModel secondDepartment)
         {
             if (secondDepartment == null) throw new NullReferenceException();
 
@@ -36,14 +37,14 @@ namespace DataAccess.DataBase.ModelsHelpers
         }
 
 
-        public static BankDepartment FindDepartmentInSequence(this IEnumerable<BankDepartment> departments, BankDepartment department)
+        public static BankDepartmentServiceModel FindDepartmentInSequence(this IEnumerable<BankDepartmentServiceModel> departments, BankDepartmentServiceModel department)
         {
             if(department == null) throw new NullReferenceException();
             return departments.FirstOrDefault(x => x.EqualsByNameAndAddress(department));
         }
 
 
-        public static void IncludeSequence(this ICollection<BankDepartment> source, IEnumerable<BankDepartment> departments)
+        public static void IncludeSequence(this ICollection<BankDepartmentServiceModel> source, IEnumerable<BankDepartmentServiceModel> departments)
         {
             foreach (var department in departments)
             {

@@ -6,9 +6,9 @@ using BusinessLogic.RateUpdate;
 using BusinessLogic.RateUpdate.Interfacies;
 using BusinessLogic.Services;
 using BusinessLogic.Services.Interfacies;
-using DataAccess.DataBase;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Interfacies;
+using DataAccess.Repositories.MsSqlRepositories;
 using DataAccess.UnitOfWork;
 using Microsoft.Practices.Unity;
 using WebApi.FluentScheduler;
@@ -23,8 +23,8 @@ namespace WebApi.Unity
             var container = new UnityContainer();
             container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<IDictionaryRepository<City>, DictionaryRepository<City>>(new HierarchicalLifetimeManager());
-            container.RegisterType<IDictionaryRepository<Currency>, DictionaryRepository<Currency>>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICityRepository, CityRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICurrencyRepository, CurrencyRepository>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IBankRepository, BankRepository>(new HierarchicalLifetimeManager());
 

@@ -4,7 +4,7 @@ using System.Data.Entity.Infrastructure;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataAccess.DataBase;
-using DataAccess.Repositories;
+using DataAccess.Repositories.MsSqlRepositories;
 using DataAccess.UnitOfWork;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

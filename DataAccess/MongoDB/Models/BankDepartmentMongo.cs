@@ -13,6 +13,6 @@ namespace DataAccess.MongoDB.Models
         public string Address { get; set; }
         public string BankName { get; set; }
         public string CityName { get; set; }
-        public ICollection<MongoDBRef> CurrencyRateByTime { get; set; }
+        public IFilteredMongoCollection<MongoDBRef> CurrencyRateByTime { get; set; }
     }
 }

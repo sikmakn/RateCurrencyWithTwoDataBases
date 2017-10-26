@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DataAccess.ModelsForServices;
 
 namespace DataAccess.DataBase.ModelsHelpers
 {
     public static class BankHelper
     {
-        public static bool EqualsByName(this Bank source, Bank toCompare)
+        public static bool EqualsByName(this BankServiceModel source, BankServiceModel toCompare)
         {
             if (source.Name == null && toCompare.Name == null)
                 return false;
@@ -13,7 +14,7 @@ namespace DataAccess.DataBase.ModelsHelpers
             return source.Name == toCompare.Name;
         }
 
-        public static void IncludeSequence(this ICollection<Bank> source, IEnumerable<Bank> banks)
+        public static void IncludeSequence(this ICollection<BankServiceModel> source, IEnumerable<BankServiceModel> banks)
         {
             foreach (var secondBank in banks)
             {

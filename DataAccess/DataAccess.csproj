@@ -94,22 +94,29 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ModelsForServices\BankDepartmentServiceModel.cs" />
+    <Compile Include="ModelsForServices\BankServiceModel.cs" />
+    <Compile Include="ModelsForServices\CityServiceModel.cs" />
+    <Compile Include="ModelsForServices\CurrencyRateByTimeServiceModel.cs" />
+    <Compile Include="ModelsForServices\CurrencyServiceModel.cs" />
     <Compile Include="MongoDB\Models\BankDepartmentMongo.cs" />
     <Compile Include="MongoDB\Models\CityMongo.cs" />
     <Compile Include="MongoDB\Models\CurrencyMongo.cs" />
     <Compile Include="MongoDB\Models\CurrencyRateByTimeMongo.cs" />
     <Compile Include="MongoDB\MongoDbContext.cs" />
-    <Compile Include="MongoDB\Repositories\BankDepartmentMongoRepository.cs" />
-    <Compile Include="MongoDB\Repositories\CityMongoRepository.cs" />
-    <Compile Include="MongoDB\Repositories\CurrencyMongoRepository.cs" />
-    <Compile Include="MongoDB\Repositories\CurrencyRateByTimeMongoRepository.cs" />
+    <Compile Include="Repositories\Interfacies\ICurrencyRepository.cs" />
+    <Compile Include="Repositories\MongoRepositories\BankDepartmentMongoRepository.cs" />
+    <Compile Include="Repositories\MongoRepositories\CityMongoRepository.cs" />
+    <Compile Include="Repositories\MongoRepositories\CurrencyMongoRepository.cs" />
+    <Compile Include="Repositories\MongoRepositories\CurrencyRateByTimeMongoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\BankRepository.cs" />
-    <Compile Include="Repositories\CurrencyRateByTimeRepository.cs" />
-    <Compile Include="Repositories\DictionaryRepository.cs" />
+    <Compile Include="Repositories\MsSqlRepositories\BankRepository.cs" />
+    <Compile Include="Repositories\MsSqlRepositories\CityRepository.cs" />
+    <Compile Include="Repositories\MsSqlRepositories\CurrencyRateByTimeRepository.cs" />
+    <Compile Include="Repositories\MsSqlRepositories\CurrencyRepository.cs" />
     <Compile Include="Repositories\Interfacies\IBankRepository.cs" />
+    <Compile Include="Repositories\Interfacies\ICityRepository.cs" />
     <Compile Include="Repositories\Interfacies\ICurrencyRateByTimeRepository.cs" />
-    <Compile Include="Repositories\Interfacies\IDictionaryRepository.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>

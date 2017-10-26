@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BusinessLogic.Services.Interfacies;
-using DataAccess.DataBase;
 using DataAccess.DataBase.ModelsHelpers;
+using DataAccess.ModelsForServices;
 using DataAccess.Repositories.Interfacies;
 
 namespace BusinessLogic.Services
@@ -16,7 +16,7 @@ namespace BusinessLogic.Services
             _bankRepository = bankRepository;
         }
 
-        public async Task IncludeSequenceToDataBaseAsync(IEnumerable<Bank> banks)
+        public async Task IncludeSequenceToDataBaseAsync(IEnumerable<BankServiceModel> banks)
         {
             foreach (var bank in banks)
             {

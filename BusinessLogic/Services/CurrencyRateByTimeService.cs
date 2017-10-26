@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
+using DataAccess.ModelsForServices;
 using DataAccess.Repositories.Interfacies;
 
 namespace BusinessLogic.Services
@@ -17,14 +18,14 @@ namespace BusinessLogic.Services
             _currencyRateByTimeRepository = currencyRateByTimeRepository;
         }
 
-        public async Task<CurrencyRateByTime> GetById(int id)
+        public async Task<CurrencyRateByTimeServiceModel> GetById(string id)
         {
             return await _currencyRateByTimeRepository.GetById(id);
         }
 
-        public IQueryable<CurrencyRateByTime> GetAllActual()
+        public async Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAllActual()
         {
-            var allRates = _currencyRateByTimeRepository.GetAll();
+            var allRates = await _currencyRateByTimeRepository.GetAll();
             var span = new TimeSpan(4, 0, 0).TotalHours;
             var now = DateTime.UtcNow;
             var result = allRates.Where(x =>

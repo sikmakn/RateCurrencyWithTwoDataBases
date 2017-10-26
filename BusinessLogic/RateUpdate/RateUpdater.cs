@@ -8,6 +8,7 @@ using BusinessLogic.RateUpdate.Interfacies;
 using BusinessLogic.Services.Interfacies;
 using DataAccess.DataBase;
 using DataAccess.DataBase.ModelsHelpers;
+using DataAccess.ModelsForServices;
 using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
 
@@ -17,14 +18,14 @@ namespace BusinessLogic.RateUpdate
     {
         private const string Url = "https://finance.tut.by/kurs/{city}/{currency}/vse-banki/?iPageNo=";
 
-        private readonly IDictionaryRepository<City> _cityRepository;
-        private readonly IDictionaryRepository<Currency> _currencyRepository;
+        private readonly ICityRepository _cityRepository;
+        private readonly ICurrencyRepository _currencyRepository;
         private readonly IBankService _bankService;
         private readonly IParser _parser;
         private readonly IReader _reader;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RateUpdater(IDictionaryRepository<City> cityRepository, IDictionaryRepository<Currency> currencyRepository,
+        public RateUpdater(ICityRepository cityRepository, ICurrencyRepository currencyRepository,
                             IParser parser, IReader reader, IBankService bankService, IUnitOfWork unitOfWork)
         {
             _bankService = bankService;
@@ -38,14 +39,14 @@ namespace BusinessLogic.RateUpdate
         public async Task Update()
         {
             var dateTime = DateTime.UtcNow;
-            var cities = _cityRepository.GetAll();
-            var currencies = _currencyRepository.GetAll();
+            var cities = await _cityRepository.GetAll();
+            var currencies = await _currencyRepository.GetAll();
             var tasks = (from city in cities
                          from currency in currencies
                          select DepartmentsByAllPages(city, currency, dateTime))
                          .ToList();
             await Task.WhenAll(tasks);
-            var results = new List<Bank>();
+            var results = new List<BankServiceModel>();
             tasks.ForEach(x => results.IncludeSequence(x.Result));
             
             await _bankService.IncludeSequenceToDataBaseAsync(results);
@@ -59,9 +60,9 @@ namespace BusinessLogic.RateUpdate
             return urlWithData.ToString();
         }
 
-        private async Task<List<Bank>> DepartmentsByAllPages(City city, Currency currency, DateTime dateTime)
+        private async Task<List<BankServiceModel>> DepartmentsByAllPages(CityServiceModel city, CurrencyServiceModel currency, DateTime dateTime)
         {
-            var banks = new List<Bank>();
+            var banks = new List<BankServiceModel>();
             string html;
             var pageNumber = 0;
             do

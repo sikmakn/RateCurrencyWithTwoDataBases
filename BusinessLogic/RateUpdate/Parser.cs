@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.RateUpdate.Interfacies;
-using DataAccess.DataBase;
 using DataAccess.DataBase.ModelsHelpers;
+using DataAccess.ModelsForServices;
 using HtmlAgilityPack;
 
 namespace BusinessLogic.RateUpdate
@@ -22,11 +22,11 @@ namespace BusinessLogic.RateUpdate
             return nextPageArrow != null;
         }
 
-        public List<Bank> ParsToIncomingBanks(string html, int cityId, int currencyId, DateTime dateTime)
+        public List<BankServiceModel> ParsToIncomingBanks(string html, string cityId, string currencyId, DateTime dateTime)
         {
             var trNodes = GetTrNodes(html);
 
-            var banks = new List<Bank>();
+            var banks = new List<BankServiceModel>();
             for (var i = 2; i < trNodes.Length; i++)
             {
                 var td = GetRowspan(trNodes[i]);
@@ -39,7 +39,7 @@ namespace BusinessLogic.RateUpdate
 
                 var bank = FindOrCreateBank(bankName, banks);
                 var bankDepartment = BankDepartmentHelper.GetNewBankDepartment(address, departmentName, cityId);
-                var currencyRate = CurrencyRateByTime.GetNewCurrencyRateByTime(currencyId, dateTime, sale, purchase);
+                var currencyRate = CurrencyRateByTimeServiceModel.GetNewCurrencyRateByTime(currencyId, dateTime, sale, purchase);
 
                 bankDepartment.CurrencyRateByTime.Add(currencyRate);
                 bank.BankDepartment.Add(bankDepartment);
@@ -84,15 +84,15 @@ namespace BusinessLogic.RateUpdate
             return GetRows(htmlDocument);
         }
 
-        private static Bank FindOrCreateBank(string bankName, List<Bank> banks)
+        private static BankServiceModel FindOrCreateBank(string bankName, List<BankServiceModel> banks)
         {
             var bank = banks.Find(x => x.Name.Contains(bankName));
             if (bank != null) return bank;
 
-            bank = new Bank
+            bank = new BankServiceModel()
             {
                 Name = bankName,
-                BankDepartment = new List<BankDepartment>()
+                BankDepartment = new List<BankDepartmentServiceModel>()
             };
             banks.Add(bank);
             return bank;

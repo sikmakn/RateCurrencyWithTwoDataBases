@@ -18,6 +18,6 @@ namespace DataAccess.MongoDB.Models
 
         public string Currency { get; set; }
 
-        public IFilteredMongoCollection<MongoDBRef> BankDepartmentMongo { get; set; }
+        public MongoDBRef BankDepartmentMongo { get; set; }
     }
 }

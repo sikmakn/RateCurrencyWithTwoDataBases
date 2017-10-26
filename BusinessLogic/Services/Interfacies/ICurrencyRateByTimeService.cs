@@ -1,18 +1,17 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using DataAccess.DataBase;
+using DataAccess.ModelsForServices;
 
 namespace BusinessLogic.Services.Interfacies
 {
     public interface ICurrencyRateByTimeService
     {
-        IQueryable<CurrencyRateByTime> GetAllActual();
+        Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAllActual();
         //IQueryable<CurrencyRateByTime> GetActualByCurrency(string currency);
         //double GetBestPurchaseByCurrency(string currency);
         //double GetBestSaleByCurrency(string currency);
         //IQueryable<CurrencyRateByTime> GetBestByPurchaseByCurrecny(string currency);
         //IQueryable<CurrencyRateByTime> GetBestBySaleByCurrency(string currency);
-        Task<CurrencyRateByTime> GetById(int id);
+        Task<CurrencyRateByTimeServiceModel> GetById(string id);
     }
 }
