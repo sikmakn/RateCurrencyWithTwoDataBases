@@ -95,9 +95,14 @@
       <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="MongoDB\Models\BankDepartmentMongo.cs" />
+    <Compile Include="MongoDB\Models\CityMongo.cs" />
+    <Compile Include="MongoDB\Models\CurrencyMongo.cs" />
     <Compile Include="MongoDB\Models\CurrencyRateByTimeMongo.cs" />
     <Compile Include="MongoDB\MongoDbContext.cs" />
     <Compile Include="MongoDB\Repositories\BankDepartmentMongoRepository.cs" />
+    <Compile Include="MongoDB\Repositories\CityMongoRepository.cs" />
+    <Compile Include="MongoDB\Repositories\CurrencyMongoRepository.cs" />
+    <Compile Include="MongoDB\Repositories\CurrencyRateByTimeMongoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BankRepository.cs" />
     <Compile Include="Repositories\CurrencyRateByTimeRepository.cs" />
@@ -134,8 +139,6 @@
       <LastGenOutput>RateCurrencyModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MongoDB\Repositories\Interfacies\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

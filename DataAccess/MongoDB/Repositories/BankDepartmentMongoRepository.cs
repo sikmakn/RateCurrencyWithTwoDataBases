@@ -6,13 +6,11 @@ namespace DataAccess.MongoDB.Repositories
 {
     public class BankDepartmentMongoRepository
     {
-        private IMongoCollection<BankDepartmentMongo> _bankDepatmentMongoCollection;
+        private IMongoCollection<BankDepartmentMongo> _bankDepartmentMongoCollection;
 
         public BankDepartmentMongoRepository(IUnitOfWork unitOfWork)
         {
-            _bankDepatmentMongoCollection = unitOfWork.MongoContext.BankDepartmentMongoCollection;
+            _bankDepartmentMongoCollection = unitOfWork.MongoContext.BankDepartmentMongoCollection;
         }
-
-
     }
 }

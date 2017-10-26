@@ -39,6 +39,7 @@ namespace WebApi.Unity
             container.RegisterType<IBankService, BankService>();
             
             container.RegisterType<IRateNbrbService, RateNbrbService>();
+
             return container;
         }
     }

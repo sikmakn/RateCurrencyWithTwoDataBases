@@ -22,20 +22,17 @@ namespace DataAccess.DataBase.ModelsHelpers
             if (secondDepartment == null) throw new NullReferenceException();
 
             if (secondDepartment.Name == null && secondDepartment.Address == null)
-            {
                 return firstDepartment.Name == null && firstDepartment.Address == null;
-            }
 
             if (secondDepartment.Name == null)
-            {
                 return firstDepartment.Name == null && firstDepartment.Address.Contains(secondDepartment.Address);
-            }
+            
             if (secondDepartment.Address == null)
-            {
                 return firstDepartment.Address == secondDepartment.Address && firstDepartment.Name.Contains(secondDepartment.Name);
-            }
+
             return
-                (firstDepartment.Name?.Contains(secondDepartment.Name) ?? false) && (firstDepartment.Address?.Contains(secondDepartment.Address) ?? false);
+                (firstDepartment.Name?.Contains(secondDepartment.Name) ?? false)
+                && (firstDepartment.Address?.Contains(secondDepartment.Address) ?? false);
         }
 
 
