@@ -1,9 +1,6 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.Services.Interfacies;
-using DataAccess.DataBase;
 using DataAccess.ModelsForServices;
 using DataAccess.Repositories.Interfacies;
 
@@ -25,15 +22,8 @@ namespace BusinessLogic.Services
 
         public async Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAllActual()
         {
-            var allRates = await _currencyRateByTimeRepository.GetAll();
-            var span = new TimeSpan(4, 0, 0).TotalHours;
-            var now = DateTime.UtcNow;
-            var result = allRates.Where(x =>
-                   DbFunctions.DiffMonths(now, x.DateTime) == 0
-                && DbFunctions.DiffYears(now, x.DateTime) == 0
-                && DbFunctions.DiffDays(now, x.DateTime) == 0
-                && DbFunctions.DiffHours(x.DateTime, now) < span);
-            return result;
+            var allRates = await _currencyRateByTimeRepository.GetAllActuall();
+            return allRates;
         }
 
         //public IQueryable<CurrencyRateByTime> GetActualByCurrency(string currency)

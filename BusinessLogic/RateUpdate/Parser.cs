@@ -89,7 +89,7 @@ namespace BusinessLogic.RateUpdate
             var bank = banks.Find(x => x.Name.Contains(bankName));
             if (bank != null) return bank;
 
-            bank = new BankServiceModel()
+            bank = new BankServiceModel
             {
                 Name = bankName,
                 BankDepartment = new List<BankDepartmentServiceModel>()

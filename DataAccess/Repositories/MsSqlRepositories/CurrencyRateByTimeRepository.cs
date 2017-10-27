@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,6 +55,36 @@ namespace DataAccess.Repositories.MsSqlRepositories
                 BankDepartmentId = currencyRate.BankDepartment.Id.ToString(),
                 CurrencyId = currencyRate.CurrencyId.ToString()
             };
+        }
+
+        public async Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAllActuall()
+        {
+            var span = new TimeSpan(4, 0, 0).TotalHours;
+            var now = DateTime.UtcNow;
+            var currencyResult = _currencyRateByTimes.Where(x =>
+                DbFunctions.DiffMonths(now, x.DateTime) == 0
+                && DbFunctions.DiffYears(now, x.DateTime) == 0
+                && DbFunctions.DiffDays(now, x.DateTime) == 0
+                & DbFunctions.DiffHours(x.DateTime, now) < span);
+            var currencyRateServiceModel = new List<CurrencyRateByTimeServiceModel>();
+            await currencyResult.ForEachAsync(x => currencyRateServiceModel.Add(new CurrencyRateByTimeServiceModel
+            {
+                Id = x.Id.ToString(),
+                DateTime = x.DateTime,
+                Purchase = x.Purchase,
+                Sale = x.Sale,
+                CurrencyId = x.CurrencyId.ToString(),
+                BankDepartmentId = x.BankDepartment.Id.ToString(),
+                BankDepartment = new BankDepartmentServiceModel
+                {
+                    Id = x.BankDepartment.Id.ToString(),
+                    Address = x.BankDepartment.Address,
+                    Name = x.BankDepartment.Name,
+                    BankId = x.BankDepartment.BankId.ToString(),
+                    CityId = x.BankDepartment.CityId.ToString()
+                }
+            }));
+            return currencyRateServiceModel.AsQueryable();
         }
     }
 }

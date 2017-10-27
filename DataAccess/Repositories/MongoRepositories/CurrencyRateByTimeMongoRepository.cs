@@ -60,5 +60,10 @@ namespace DataAccess.Repositories.MongoRepositories
             };
         }
 
+        public async Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAllActuall()
+        {
+            return await Task.Run(()=>new List<CurrencyRateByTimeServiceModel>().AsQueryable());
+        }
+
     }
 }

@@ -9,5 +9,7 @@ namespace DataAccess.Repositories.Interfacies
     {
         Task<CurrencyRateByTimeServiceModel> GetById(string id);
         Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAll();
+
+        Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAllActuall();
     }
 }
