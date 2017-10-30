@@ -5,5 +5,14 @@
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public CityServiceModel Copy()
+        {
+            return new CityServiceModel
+            {
+                Id = Id,
+                Name = Name
+            };
+        }
     }
 }

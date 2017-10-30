@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using AutoMapper;
 using DataAccess.DataBase;
 using DataAccess.ModelsForServices;
 using DataAccess.Repositories.Interfacies;
@@ -20,11 +21,7 @@ namespace DataAccess.Repositories.MsSqlRepositories
         public async Task<ICollection<CurrencyServiceModel>> GetAll()
         {
             var currencyServiceModelList = new List<CurrencyServiceModel>();
-            await _dbSet.ForEachAsync(x => currencyServiceModelList.Add(new CurrencyServiceModel
-            {
-                Id = x.Id.ToString(),
-                Name = x.Name
-            }));
+            await _dbSet.ForEachAsync(x => currencyServiceModelList.Add(Mapper.Map<Currency, CurrencyServiceModel>(x)));
             return currencyServiceModelList;
         }
     }

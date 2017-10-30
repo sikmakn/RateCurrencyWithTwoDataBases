@@ -14,7 +14,6 @@ namespace WebApi
             builder.EntitySet<CurrencyRateByTime>("CurrencyRateByTime");
             builder.EntitySet<BankDepartment>("BankDepartment");
             builder.EntitySet<Currency>("Currency");
-            builder.EntitySet<Bank>("Bank");
             builder.EntitySet<City>("City");
 
             config.Count().Filter().OrderBy().Expand().Select().MaxTop(null);

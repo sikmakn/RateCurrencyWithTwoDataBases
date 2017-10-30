@@ -6,7 +6,6 @@ using BusinessLogic.RateUpdate;
 using BusinessLogic.RateUpdate.Interfacies;
 using BusinessLogic.Services;
 using BusinessLogic.Services.Interfacies;
-using DataAccess.Repositories;
 using DataAccess.Repositories.Interfacies;
 using DataAccess.Repositories.MsSqlRepositories;
 using DataAccess.UnitOfWork;
@@ -26,8 +25,6 @@ namespace WebApi.Unity
             container.RegisterType<ICityRepository, CityRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICurrencyRepository, CurrencyRepository>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<IBankRepository, BankRepository>(new HierarchicalLifetimeManager());
-
             container.RegisterType<IParser, Parser>(new HierarchicalLifetimeManager());
             container.RegisterType<IReader, Reader>(new HierarchicalLifetimeManager());
             container.RegisterType<IRateUpdater, RateUpdater>(new HierarchicalLifetimeManager());
@@ -35,10 +32,10 @@ namespace WebApi.Unity
 
             container.RegisterType<ICurrencyRateByTimeRepository, CurrencyRateByTimeRepository>();
             container.RegisterType<ICurrencyRateByTimeService, CurrencyRateByTimeService>();
-
-            container.RegisterType<IBankService, BankService>();
             
             container.RegisterType<IRateNbrbService, RateNbrbService>();
+
+            container.RegisterType<IBankDepartmentRepository, BankDepartmentRepository>();
 
             return container;
         }

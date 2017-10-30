@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using DataAccess.AutoMapper;
 
 namespace WebApi
 {
@@ -6,6 +7,7 @@ namespace WebApi
     {
         protected void Application_Start()
         {
+            AutoMapperConfig.Configure();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

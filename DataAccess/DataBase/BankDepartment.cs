@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
 namespace DataAccess.DataBase
 {
+    using System;
     using System.Collections.Generic;
     
     public partial class BankDepartment
@@ -24,12 +24,10 @@ namespace DataAccess.DataBase
         public string Name { get; set; }
         public string Address { get; set; }
         public int CityId { get; set; }
-        public int BankId { get; set; }
+        public string BankName { get; set; }
     
-        public virtual Bank Bank { get; set; }
         public virtual City City { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CurrencyRateByTime> CurrencyRateByTime { get; set; }
-
     }
 }

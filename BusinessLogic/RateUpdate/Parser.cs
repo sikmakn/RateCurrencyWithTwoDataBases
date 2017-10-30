@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using BusinessLogic.RateUpdate.Interfacies;
-using DataAccess.DataBase.ModelsHelpers;
 using DataAccess.ModelsForServices;
+using DataAccess.Repositories.Interfacies;
 using HtmlAgilityPack;
 
 namespace BusinessLogic.RateUpdate
 {
     public class Parser: IParser
     {
+        private readonly IBankDepartmentRepository _bankDepartmentRepository;
+
+        public Parser(IBankDepartmentRepository bankDepartmentRepository)
+        {
+            _bankDepartmentRepository = bankDepartmentRepository;
+        }
+
         #region IParser
         public bool HasNextPage(string html)
         {
@@ -22,11 +29,11 @@ namespace BusinessLogic.RateUpdate
             return nextPageArrow != null;
         }
 
-        public List<BankServiceModel> ParsToIncomingBanks(string html, string cityId, string currencyId, DateTime dateTime)
+        public List<CurrencyRateByTimeServiceModel> ParsToCurrenciesRatesByTimes(string html, CityServiceModel city, CurrencyServiceModel currency, DateTime dateTime)
         {
+            var currencyRateByTimeList = new List<CurrencyRateByTimeServiceModel>();
             var trNodes = GetTrNodes(html);
-
-            var banks = new List<BankServiceModel>();
+            
             for (var i = 2; i < trNodes.Length; i++)
             {
                 var td = GetRowspan(trNodes[i]);
@@ -37,14 +44,31 @@ namespace BusinessLogic.RateUpdate
                 var bankName = GetBankNameFromNode(td[0]);
                 var departmentName = GetBankDepartmentNameFromNode(td[0]);
 
-                var bank = FindOrCreateBank(bankName, banks);
-                var bankDepartment = BankDepartmentHelper.GetNewBankDepartment(address, departmentName, cityId);
-                var currencyRate = CurrencyRateByTimeServiceModel.GetNewCurrencyRateByTime(currencyId, dateTime, sale, purchase);
-
-                bankDepartment.CurrencyRateByTime.Add(currencyRate);
-                bank.BankDepartment.Add(bankDepartment);
+                var bankDepartment = _bankDepartmentRepository.FindByName(departmentName);
+                if (bankDepartment == null)
+                {
+                    bankDepartment =
+                        new BankDepartmentServiceModel
+                        {
+                            Address = address,
+                            BankName = bankName,
+                            City = city.Copy(),
+                            Name = departmentName,
+                            CurrencyRateByTime = new List<CurrencyRateByTimeServiceModel>()
+                        };
+                    _bankDepartmentRepository.Add(bankDepartment);
+                }
+                var currencyRate = new CurrencyRateByTimeServiceModel
+                {
+                    DateTime = dateTime,
+                    Purchase = purchase,
+                    Sale = sale,
+                    BankDepartment = bankDepartment,
+                    Currency = currency.Copy(),
+                };
+                currencyRateByTimeList.Add(currencyRate);
             }
-            return banks;
+            return currencyRateByTimeList;
         }
         #endregion
 
@@ -84,19 +108,6 @@ namespace BusinessLogic.RateUpdate
             return GetRows(htmlDocument);
         }
 
-        private static BankServiceModel FindOrCreateBank(string bankName, List<BankServiceModel> banks)
-        {
-            var bank = banks.Find(x => x.Name.Contains(bankName));
-            if (bank != null) return bank;
-
-            bank = new BankServiceModel
-            {
-                Name = bankName,
-                BankDepartment = new List<BankDepartmentServiceModel>()
-            };
-            banks.Add(bank);
-            return bank;
-        }
 
         private static HtmlNode[] GetRows(HtmlDocument htmlDocument)
         {

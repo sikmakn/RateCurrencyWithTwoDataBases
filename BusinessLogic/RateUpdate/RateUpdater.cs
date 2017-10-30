@@ -5,9 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Helpers.Interfacies;
 using BusinessLogic.RateUpdate.Interfacies;
-using BusinessLogic.Services.Interfacies;
-using DataAccess.DataBase;
-using DataAccess.DataBase.ModelsHelpers;
 using DataAccess.ModelsForServices;
 using DataAccess.Repositories.Interfacies;
 using DataAccess.UnitOfWork;
@@ -20,20 +17,20 @@ namespace BusinessLogic.RateUpdate
 
         private readonly ICityRepository _cityRepository;
         private readonly ICurrencyRepository _currencyRepository;
-        private readonly IBankService _bankService;
         private readonly IParser _parser;
         private readonly IReader _reader;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrencyRateByTimeRepository _currencyRateByTimeRepository;
 
         public RateUpdater(ICityRepository cityRepository, ICurrencyRepository currencyRepository,
-                            IParser parser, IReader reader, IBankService bankService, IUnitOfWork unitOfWork)
+                            IParser parser, IReader reader, IUnitOfWork unitOfWork, ICurrencyRateByTimeRepository currencyRateByTimeRepository)
         {
-            _bankService = bankService;
             _unitOfWork = unitOfWork;
             _reader = reader;
             _parser = parser;
             _cityRepository = cityRepository;
             _currencyRepository = currencyRepository;
+            _currencyRateByTimeRepository = currencyRateByTimeRepository;
         }
 
         public async Task Update()
@@ -46,10 +43,9 @@ namespace BusinessLogic.RateUpdate
                          select DepartmentsByAllPages(city, currency, dateTime))
                          .ToList();
             await Task.WhenAll(tasks);
-            var results = new List<BankServiceModel>();
-            tasks.ForEach(x => results.IncludeSequence(x.Result));
-            
-            await _bankService.IncludeSequenceToDataBaseAsync(results);
+
+            tasks.ForEach(t => _currencyRateByTimeRepository.BulkAdd(t.Result));
+
             await _unitOfWork.SaveChangesAsync();
         }
 
@@ -60,9 +56,10 @@ namespace BusinessLogic.RateUpdate
             return urlWithData.ToString();
         }
 
-        private async Task<List<BankServiceModel>> DepartmentsByAllPages(CityServiceModel city, CurrencyServiceModel currency, DateTime dateTime)
+        private async Task<List<CurrencyRateByTimeServiceModel>> DepartmentsByAllPages(CityServiceModel city, CurrencyServiceModel currency, DateTime dateTime)
         {
-            var banks = new List<BankServiceModel>();
+            var currencyRatesList = new List<CurrencyRateByTimeServiceModel>();
+
             string html;
             var pageNumber = 0;
             do
@@ -70,10 +67,11 @@ namespace BusinessLogic.RateUpdate
                 pageNumber++;
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
-                var pagesBanks =_parser.ParsToIncomingBanks(html, city.Id, currency.Id, dateTime);
-                banks.IncludeSequence(pagesBanks);
+                var pageCurrencyRates =_parser.ParsToCurrenciesRatesByTimes(html, city, currency, dateTime);
+                currencyRatesList.AddRange(pageCurrencyRates);
             } while (_parser.HasNextPage(html));
-            return banks;
+
+            return currencyRatesList;
         }
 
     }

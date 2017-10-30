@@ -35,23 +35,23 @@ namespace WebApi.Controllers
             return SingleResult.Create(query.AsQueryable());
         }
 
-        [EnableQuery]
-        public async Task<SingleResult<BankDepartmentServiceModel>> GetBankDepartment([FromODataUri] string key)
-        {
-            var currencyRateByTime = await _currencyRateByTimeService.GetById(key);
-            var department = currencyRateByTime?.BankDepartment;
-            var query = new List<BankDepartmentServiceModel> {department};
-            return SingleResult.Create(query.AsQueryable());
-        }
+        //[EnableQuery]
+        //public async Task<SingleResult<BankDepartmentServiceModel>> GetBankDepartment([FromODataUri] string key)
+        //{
+        //    var currencyRateByTime = await _currencyRateByTimeService.GetById(key);
+        //    var department = currencyRateByTime?.BankDepartment;
+        //    var query = new List<BankDepartmentServiceModel> {department};
+        //    return SingleResult.Create(query.AsQueryable());
+        //}
 
         // GET: odata/CurrencyRateByTimes(5)/Currency
-        [EnableQuery]
-        public async Task<SingleResult<Currency>> GetCurrency([FromODataUri] string key)
-        {
-            var currencyRateByTime = await _currencyRateByTimeService.GetById(key);
-            var currency = currencyRateByTime?.Currency;
-            var query = new List<Currency> {currency};
-            return SingleResult.Create(query.AsQueryable());
-        }
+        //[EnableQuery]
+        //public async Task<SingleResult<Currency>> GetCurrency([FromODataUri] string key)
+        //{
+        //    var currencyRateByTime = await _currencyRateByTimeService.GetById(key);
+        //    var currency = currencyRateByTime?.Currency;
+        //    var query = new List<Currency> {currency};
+        //    return SingleResult.Create(query.AsQueryable());
+        //}
     }
 }

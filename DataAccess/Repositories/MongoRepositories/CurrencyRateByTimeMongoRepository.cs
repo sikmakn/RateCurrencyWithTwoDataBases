@@ -19,7 +19,6 @@ namespace DataAccess.Repositories.MongoRepositories
             _currencyRateMongoCollection = unitOfWork.MongoContext.CurrencyRateByTimeMongoCollection;
         }
 
-
         public async Task<IQueryable<CurrencyRateByTimeServiceModel>> GetAll()
         {
             var currencyRateServiceList = new List<CurrencyRateByTimeServiceModel>();
@@ -65,5 +64,15 @@ namespace DataAccess.Repositories.MongoRepositories
             return await Task.Run(()=>new List<CurrencyRateByTimeServiceModel>().AsQueryable());
         }
 
+
+        public void Add(CurrencyRateByTimeServiceModel currencyRateByTimeServiceModel)
+        {
+            
+        }
+
+        public void BulkAdd(IEnumerable<CurrencyRateByTimeServiceModel> currencyRateByTimeServiceModels)
+        {
+            
+        }
     }
 }

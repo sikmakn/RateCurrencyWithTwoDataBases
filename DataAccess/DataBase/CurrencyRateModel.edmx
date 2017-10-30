@@ -4,23 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="RateCurrencyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Bank">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="500" Nullable="false" />
-        </EntityType>
+      <Schema Namespace="RateCurrencyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BankDepartment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="nchar" MaxLength="500" Nullable="false" />
           <Property Name="CityId" Type="int" Nullable="false" />
-          <Property Name="BankId" Type="int" Nullable="false" />
+          <Property Name="BankName" Type="nchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -47,18 +40,6 @@
           <Property Name="Sale" Type="float" Nullable="false" />
           <Property Name="Purchase" Type="float" Nullable="false" />
         </EntityType>
-        <Association Name="FK_BankDepartment_Bank">
-          <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
-          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Bank">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BankDepartment">
-              <PropertyRef Name="BankId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BankDepartment_City">
           <End Role="City" Type="Self.City" Multiplicity="1" />
           <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
@@ -72,7 +53,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CurrencyRateByTime_BankDepartment">
-          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="1" />
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CurrencyRateByTime" Type="Self.CurrencyRateByTime" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BankDepartment">
@@ -96,15 +79,10 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RateCurrencyModelStoreContainer">
-          <EntitySet Name="Bank" EntityType="Self.Bank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BankDepartment" EntityType="Self.BankDepartment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Currency" EntityType="Self.Currency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CurrencyRateByTime" EntityType="Self.CurrencyRateByTime" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_BankDepartment_Bank" Association="Self.FK_BankDepartment_Bank">
-            <End Role="Bank" EntitySet="Bank" />
-            <End Role="BankDepartment" EntitySet="BankDepartment" />
-          </AssociationSet>
           <AssociationSet Name="FK_BankDepartment_City" Association="Self.FK_BankDepartment_City">
             <End Role="City" EntitySet="City" />
             <End Role="BankDepartment" EntitySet="BankDepartment" />
@@ -118,28 +96,20 @@
             <End Role="CurrencyRateByTime" EntitySet="CurrencyRateByTime" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RateCurrencyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Bank">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="BankDepartment" Relationship="Self.FK_BankDepartment_Bank" FromRole="Bank" ToRole="BankDepartment" />
-        </EntityType>
         <EntityType Name="BankDepartment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="CityId" Type="Int32" Nullable="false" />
-          <Property Name="BankId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Bank" Relationship="Self.FK_BankDepartment_Bank" FromRole="BankDepartment" ToRole="Bank" />
+          <Property Name="BankName" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="City" Relationship="Self.FK_BankDepartment_City" FromRole="BankDepartment" ToRole="City" />
           <NavigationProperty Name="CurrencyRateByTime" Relationship="Self.FK_CurrencyRateByTime_BankDepartment" FromRole="BankDepartment" ToRole="CurrencyRateByTime" />
         </EntityType>
@@ -172,18 +142,6 @@
           <NavigationProperty Name="BankDepartment" Relationship="Self.FK_CurrencyRateByTime_BankDepartment" FromRole="CurrencyRateByTime" ToRole="BankDepartment" />
           <NavigationProperty Name="Currency" Relationship="Self.FK_CurrencyRateByTime_Currency" FromRole="CurrencyRateByTime" ToRole="Currency" />
         </EntityType>
-        <Association Name="FK_BankDepartment_Bank">
-          <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
-          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Bank">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BankDepartment">
-              <PropertyRef Name="BankId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BankDepartment_City">
           <End Role="City" Type="Self.City" Multiplicity="1" />
           <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="*" />
@@ -197,7 +155,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CurrencyRateByTime_BankDepartment">
-          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="1" />
+          <End Role="BankDepartment" Type="Self.BankDepartment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CurrencyRateByTime" Type="Self.CurrencyRateByTime" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BankDepartment">
@@ -221,15 +181,10 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RateCurrencyContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Bank" EntityType="Self.Bank" />
           <EntitySet Name="BankDepartment" EntityType="Self.BankDepartment" />
           <EntitySet Name="City" EntityType="Self.City" />
           <EntitySet Name="Currency" EntityType="Self.Currency" />
           <EntitySet Name="CurrencyRateByTime" EntityType="Self.CurrencyRateByTime" />
-          <AssociationSet Name="FK_BankDepartment_Bank" Association="Self.FK_BankDepartment_Bank">
-            <End Role="Bank" EntitySet="Bank" />
-            <End Role="BankDepartment" EntitySet="BankDepartment" />
-          </AssociationSet>
           <AssociationSet Name="FK_BankDepartment_City" Association="Self.FK_BankDepartment_City">
             <End Role="City" EntitySet="City" />
             <End Role="BankDepartment" EntitySet="BankDepartment" />
@@ -249,14 +204,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RateCurrencyModelStoreContainer" CdmEntityContainer="RateCurrencyContext">
-          <EntitySetMapping Name="Bank">
-            <EntityTypeMapping TypeName="RateCurrencyModel.Bank">
-              <MappingFragment StoreEntitySet="Bank">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BankDepartment">
             <EntityTypeMapping TypeName="RateCurrencyModel.BankDepartment">
               <MappingFragment StoreEntitySet="BankDepartment">
@@ -264,7 +211,7 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="BankId" ColumnName="BankId" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -8,6 +8,8 @@ namespace BusinessLogic.RateUpdate.Interfacies
     public interface IParser
     {
         bool HasNextPage(string html);
-        List<BankServiceModel> ParsToIncomingBanks(string html, string cityId, string currencyId, DateTime dateTime);
+
+        List<CurrencyRateByTimeServiceModel> ParsToCurrenciesRatesByTimes(string html, CityServiceModel city,
+            CurrencyServiceModel currency, DateTime dateTime);
     }
 }

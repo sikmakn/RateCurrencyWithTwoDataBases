@@ -7,9 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
 namespace DataAccess.DataBase
 {
+    using System;
     using System.Collections.Generic;
     
     public partial class Currency

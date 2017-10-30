@@ -12,8 +12,8 @@ namespace DataAccess.ModelsForServices
 
         public ICollection<CurrencyRateByTimeServiceModel> CurrencyRateByTime { get; set; }
 
-        public string CityId { get; set; }
+        public CityServiceModel City { get; set; }
 
-        public string BankId { get; set; }
+        public string BankName { get; set; }
     }
 }

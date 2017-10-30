@@ -25,7 +25,6 @@ namespace DataAccess.DataBase
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Bank> Bank { get; set; }
         public virtual DbSet<BankDepartment> BankDepartment { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Currency> Currency { get; set; }
