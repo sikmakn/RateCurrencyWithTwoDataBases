@@ -14,7 +14,7 @@ namespace DataAccess.ModelsForServices
 
         public  DateTime DateTime { get; set; }
 
-        public BankDepartmentServiceModel BankDepartment { get; set; }
+        public string BankDepartmentId { get; set; }
 
     }
 }

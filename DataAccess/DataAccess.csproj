@@ -69,31 +69,31 @@
     <Compile Include="AutoMapper\MongoModelsMapperProfile.cs" />
     <Compile Include="AutoMapper\MsSqlModelsMapperProfile.cs" />
     <Compile Include="DataBase\BankDepartment.cs">
-      <DependentUpon>CurrencyRateModel.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\City.cs">
-      <DependentUpon>CurrencyRateModel.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\Currency.cs">
-      <DependentUpon>CurrencyRateModel.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataBase\CurrencyRateByTime.cs">
-      <DependentUpon>CurrencyRateModel.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\CurrencyRateModel.Context.cs">
+    <Compile Include="DataBase\RateCurrencyModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CurrencyRateModel.Context.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\CurrencyRateModel.cs">
+    <Compile Include="DataBase\RateCurrencyModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CurrencyRateModel.tt</DependentUpon>
+      <DependentUpon>RateCurrencyModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataBase\CurrencyRateModel.Designer.cs">
+    <Compile Include="DataBase\RateCurrencyModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CurrencyRateModel.edmx</DependentUpon>
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="ModelsForServices\BankDepartmentServiceModel.cs" />
     <Compile Include="ModelsForServices\CityServiceModel.cs" />
@@ -122,12 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="DataBase\CurrencyRateModel.edmx">
+    <EntityDeploy Include="DataBase\RateCurrencyModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CurrencyRateModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>RateCurrencyModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DataBase\CurrencyRateModel.edmx.diagram">
-      <DependentUpon>CurrencyRateModel.edmx</DependentUpon>
+    <None Include="DataBase\RateCurrencyModel.edmx.diagram">
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -135,15 +135,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataBase\CurrencyRateModel.Context.tt">
+    <Content Include="DataBase\RateCurrencyModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CurrencyRateModel.edmx</DependentUpon>
-      <LastGenOutput>CurrencyRateModel.Context.cs</LastGenOutput>
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
+      <LastGenOutput>RateCurrencyModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DataBase\CurrencyRateModel.tt">
+    <Content Include="DataBase\RateCurrencyModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CurrencyRateModel.edmx</DependentUpon>
-      <LastGenOutput>CurrencyRateModel.cs</LastGenOutput>
+      <DependentUpon>RateCurrencyModel.edmx</DependentUpon>
+      <LastGenOutput>RateCurrencyModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

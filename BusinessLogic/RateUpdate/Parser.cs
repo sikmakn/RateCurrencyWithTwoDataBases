@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BusinessLogic.RateUpdate.Interfacies;
 using DataAccess.ModelsForServices;
 using DataAccess.Repositories.Interfacies;
@@ -29,7 +30,7 @@ namespace BusinessLogic.RateUpdate
             return nextPageArrow != null;
         }
 
-        public List<CurrencyRateByTimeServiceModel> ParsToCurrenciesRatesByTimes(string html, CityServiceModel city, CurrencyServiceModel currency, DateTime dateTime)
+        public async Task<List<CurrencyRateByTimeServiceModel>> ParsToCurrenciesRatesByTimes(string html, CityServiceModel city, CurrencyServiceModel currency, DateTime dateTime)
         {
             var currencyRateByTimeList = new List<CurrencyRateByTimeServiceModel>();
             var trNodes = GetTrNodes(html);
@@ -44,7 +45,8 @@ namespace BusinessLogic.RateUpdate
                 var bankName = GetBankNameFromNode(td[0]);
                 var departmentName = GetBankDepartmentNameFromNode(td[0]);
 
-                var bankDepartment = _bankDepartmentRepository.FindByName(departmentName);
+                var bankDepartment = _bankDepartmentRepository.FindByNameAndAddress(departmentName, address);
+                
                 if (bankDepartment == null)
                 {
                     bankDepartment =
@@ -54,16 +56,16 @@ namespace BusinessLogic.RateUpdate
                             BankName = bankName,
                             City = city.Copy(),
                             Name = departmentName,
-                            CurrencyRateByTime = new List<CurrencyRateByTimeServiceModel>()
                         };
-                    _bankDepartmentRepository.Add(bankDepartment);
+                    await _bankDepartmentRepository.Add(bankDepartment);
                 }
+
                 var currencyRate = new CurrencyRateByTimeServiceModel
                 {
                     DateTime = dateTime,
                     Purchase = purchase,
                     Sale = sale,
-                    BankDepartment = bankDepartment,
+                    BankDepartmentId = bankDepartment.Id,
                     Currency = currency.Copy(),
                 };
                 currencyRateByTimeList.Add(currencyRate);

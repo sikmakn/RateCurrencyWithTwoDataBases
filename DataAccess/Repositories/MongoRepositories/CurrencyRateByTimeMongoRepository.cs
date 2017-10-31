@@ -67,7 +67,6 @@ namespace DataAccess.Repositories.MongoRepositories
 
         public void Add(CurrencyRateByTimeServiceModel currencyRateByTimeServiceModel)
         {
-            
         }
 
         public void BulkAdd(IEnumerable<CurrencyRateByTimeServiceModel> currencyRateByTimeServiceModels)

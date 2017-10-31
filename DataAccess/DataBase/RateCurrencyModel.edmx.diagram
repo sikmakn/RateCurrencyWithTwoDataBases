@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d70c4b623ebe444a87eb4bf245e2e479" Name="Diagram1">
+        <EntityTypeShape EntityType="RateCurrencyWithNestedBankModel.BankDepartment" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="RateCurrencyWithNestedBankModel.City" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RateCurrencyWithNestedBankModel.Currency" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RateCurrencyWithNestedBankModel.CurrencyRateByTime" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="RateCurrencyWithNestedBankModel.FK_BankDepartment_City" ManuallyRouted="false" />
+        <AssociationConnector Association="RateCurrencyWithNestedBankModel.FK_CurrencyRateByTime_BankDepartment" ManuallyRouted="false" />
+        <AssociationConnector Association="RateCurrencyWithNestedBankModel.FK_CurrencyRateByTime_Currency" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

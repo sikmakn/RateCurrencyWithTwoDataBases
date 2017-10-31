@@ -38,13 +38,22 @@ namespace BusinessLogic.RateUpdate
             var dateTime = DateTime.UtcNow;
             var cities = await _cityRepository.GetAll();
             var currencies = await _currencyRepository.GetAll();
-            var tasks = (from city in cities
-                         from currency in currencies
-                         select DepartmentsByAllPages(city, currency, dateTime))
-                         .ToList();
-            await Task.WhenAll(tasks);
+            var results = new List<CurrencyRateByTimeServiceModel>();
+            foreach (var city in cities)
+            {
+                foreach (var currency in currencies)
+                {
+                    results.AddRange(await DepartmentsByAllPages(city, currency, dateTime));
+                }
+            }
 
-            tasks.ForEach(t => _currencyRateByTimeRepository.BulkAdd(t.Result));
+            _currencyRateByTimeRepository.BulkAdd(results);
+            //var tasks = (from city in cities
+            //             from currency in currencies
+            //             select DepartmentsByAllPages(city, currency, dateTime))
+            //             .ToList();
+            //await Task.WhenAll(tasks);
+            //tasks.ForEach(t => _currencyRateByTimeRepository.BulkAdd(t.Result));
 
             await _unitOfWork.SaveChangesAsync();
         }
@@ -67,7 +76,7 @@ namespace BusinessLogic.RateUpdate
                 pageNumber++;
                 var urlWithData = TransformUrl(city.Name, currency.Name);
                 html = await _reader.HttpClientRead(urlWithData + pageNumber);
-                var pageCurrencyRates =_parser.ParsToCurrenciesRatesByTimes(html, city, currency, dateTime);
+                var pageCurrencyRates = await _parser.ParsToCurrenciesRatesByTimes(html, city, currency, dateTime);
                 currencyRatesList.AddRange(pageCurrencyRates);
             } while (_parser.HasNextPage(html));
 

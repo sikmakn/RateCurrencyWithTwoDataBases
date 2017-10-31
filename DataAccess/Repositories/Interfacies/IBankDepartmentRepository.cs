@@ -1,11 +1,12 @@
-﻿using DataAccess.ModelsForServices;
+﻿using System.Threading.Tasks;
+using DataAccess.ModelsForServices;
 
 namespace DataAccess.Repositories.Interfacies
 {
     public interface IBankDepartmentRepository
     {
-        BankDepartmentServiceModel FindByName(string departmentName);
+        BankDepartmentServiceModel FindByNameAndAddress(string departmentName, string address);
 
-        void Add(BankDepartmentServiceModel departmentServiceModel);
+        Task<string> Add(BankDepartmentServiceModel departmentServiceModel);
     }
 }

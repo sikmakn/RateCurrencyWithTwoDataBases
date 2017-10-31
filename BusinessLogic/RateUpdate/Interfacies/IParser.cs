@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DataAccess.DataBase;
 using DataAccess.ModelsForServices;
 
@@ -9,7 +10,7 @@ namespace BusinessLogic.RateUpdate.Interfacies
     {
         bool HasNextPage(string html);
 
-        List<CurrencyRateByTimeServiceModel> ParsToCurrenciesRatesByTimes(string html, CityServiceModel city,
+        Task<List<CurrencyRateByTimeServiceModel>> ParsToCurrenciesRatesByTimes(string html, CityServiceModel city,
             CurrencyServiceModel currency, DateTime dateTime);
     }
 }

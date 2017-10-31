@@ -65,7 +65,9 @@ namespace DataAccess.Repositories.MsSqlRepositories
         public void Add(CurrencyRateByTimeServiceModel currencyRateServiceModel)
         {
             var currencyRate = Mapper.Map<CurrencyRateByTimeServiceModel, CurrencyRateByTime>(currencyRateServiceModel);
+
             _currencyRateByTimes.Add(currencyRate);
+;
         }
     }
 }
